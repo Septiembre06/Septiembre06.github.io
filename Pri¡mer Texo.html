@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<title>Felicidades Mamá</title>
+		<style>
+			:root{--bg1:#ffecd2;--bg2:#fcb69f;--accent:#ff416c;--accent2:#ff6b6b}
+			*{box-sizing:border-box}
+			html,body{height:100%}
+			body{
+				margin:0;
+				font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+				display:flex;align-items:center;justify-content:center;
+				/* show user-provided photo as page background (save file as mama-foto.jpg in same folder)
+					 we keep a soft translucent white overlay so text and UI remain readable */
+				background: linear-gradient(rgba(255,255,255,0.36), rgba(255,255,255,0.36)), url('mama-foto.jpg') center/cover no-repeat fixed, linear-gradient(135deg,var(--bg1),var(--bg2));
+				color:#2b2b2b;
+			}
+
+			.card{
+				width:min(980px,94vw);
+				padding:36px;
+				border-radius:20px;
+				background:rgba(255,255,255,0.85);
+				box-shadow:0 10px 30px rgba(0,0,0,0.12);
+				text-align:center;
+				position:relative;overflow:hidden;
+			}
+
+			h1{
+				font-size:clamp(3rem,9vw,6.5rem);
+				margin:0 0 6px 0;
+				line-height:0.92;
+				letter-spacing:0.3px;
+				color:transparent;
+				/* big shiny gradient text */
+				background: linear-gradient(90deg,#ff2b5c,#ff7b9b,#ffd1e0);
+				-webkit-background-clip: text;
+				background-clip:text;
+				-webkit-text-fill-color:transparent;
+				text-shadow:0 6px 18px rgba(255,80,120,0.14), 0 1px 0 rgba(255,255,255,0.25) inset;
+				font-weight:800;
+			}
+
+			p.lead{font-size:1.15rem; margin:0 0 18px 0; color:#333}
+
+			/* rotating nice messages */
+			.rotator{height:40px;margin-top:6px;margin-bottom:6px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+			.rotator p{margin:0;padding:0 8px;font-weight:700;color:#8c1a45;opacity:0;transform:translateY(6px);transition:all .5s ease}
+			.rotator p.active{opacity:1;transform:translateY(0)}
+
+			/* small reasons list */
+			.reasons{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:12px}
+			.reasons .reason{background:linear-gradient(120deg,#fff6f8,#ffeef2);padding:8px 12px;border-radius:999px;border:1px solid rgba(255,90,120,0.08);font-weight:600;color:#9b1b48;box-shadow:0 6px 18px rgba(255,80,120,0.06)}
+
+			/* confetti canvas fixed on top of card */
+			#confetti{position:absolute;inset:0;pointer-events:none}
+
+			.hearts{position:absolute;inset:0;pointer-events:none}
+
+			.heart{
+				position:absolute; width:44px;height:44px; transform:rotate(45deg);
+				left:50%; top:50%; margin:-22px 0 0 -22px; opacity:0.95;
+				animation:floatUp linear infinite;
+			}
+
+			.heart *{filter:drop-shadow(0 6px 8px rgba(0,0,0,0.08))}
+
+			@keyframes floatUp{
+				0%{transform:translateY(10px) rotate(45deg) scale(0.85); opacity:0}
+				10%{opacity:1}
+				100%{transform:translateY(-420px) rotate(45deg) scale(1.05); opacity:0}
+			}
+
+			/* create many hearts with different positions and durations */
+			.h1{left:8%; bottom:8%; animation-duration:6s; animation-delay:0s;}
+			.h2{left:20%; bottom:10%; animation-duration:7s; animation-delay:0.6s; transform-origin:center;}
+			.h3{left:34%; bottom:6%; animation-duration:8s; animation-delay:0.2s}
+			.h4{left:52%; bottom:10%; animation-duration:5.8s; animation-delay:0.3s}
+			.h5{left:68%; bottom:3%; animation-duration:6.9s; animation-delay:0.9s}
+			.h6{left:85%; bottom:9%; animation-duration:7.5s; animation-delay:0.4s}
+			.h7{left:40%; bottom:18%; animation-duration:6.4s; animation-delay:0.7s}
+			.h8{left:12%; bottom:24%; animation-duration:8.2s; animation-delay:0.5s}
+
+			.controls{display:flex;gap:12px;justify-content:center;margin-top:12px}
+
+			button{appearance:none;border:0;background:linear-gradient(90deg,var(--accent),var(--accent2));
+				color:white;padding:10px 16px;border-radius:999px;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(255,65,108,0.14)}
+
+			small.credit{display:block;margin-top:18px;color:#6e6e6e}
+
+			/* responsive */
+			@media (max-width:540px){.card{padding:22px}}
+
+			/* dialog / surprise panel styles */
+			.dialog{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:20px;transition:opacity .18s ease;opacity:0;pointer-events:none;background:linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35));}
+			.dialog[aria-hidden="false"]{opacity:1;pointer-events:auto}
+			.dialog-panel{width:min(840px,96vw);max-height:86vh;overflow:auto;padding:22px;border-radius:14px;background:linear-gradient(180deg,#fff #fff);box-shadow:0 22px 50px rgba(20,20,40,0.35);border:1px solid rgba(255,180,200,0.06)}
+			.dialog-close{position:absolute;right:18px;top:18px;background:transparent;border:0;font-size:20px;cursor:pointer;color:#6b223d}
+			.surprise-section{margin:10px 0}
+			.surprise-section h3{margin:0 0 8px 0;color:#9b1b48}
+			.messages{list-style:none;margin:0;padding:0;display:block}
+			.messages li{margin:6px 0;padding:8px;border-radius:10px;background:linear-gradient(90deg,#fff0f3,#fff8f9);color:#6b223d}
+			.poem{background:#fff6f8;padding:10px;border-radius:8px;border-left:3px solid #ffb3c9;margin:0;color:#9b1b48}
+			.thumbs{display:flex;gap:10px;align-items:center}
+			.thumb{width:110px;height:72px;border-radius:8px;background-size:cover;background-position:center;border:2px solid rgba(255,255,255,0.5);display:flex;align-items:center;justify-content:center;color:#6b223d;font-weight:700}
+			.reasons.small .reason{padding:6px 8px;font-size:0.9rem}
+			.dialog-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:14px}
+			button.accent{background:linear-gradient(90deg,#ff7b9b,#ff416c);color:white}
+		</style>
+	</head>
+	<body>
+		<main class="card" role="main" aria-labelledby="main-title">
+			<h1 id="main-title">¡Felicidades, mamá! 💖</h1>
+			<p class="lead">tu familia te quiere mucho</p>
+			<div class="rotator" aria-hidden="true">
+				<p class="r0 active">Eres nuestro sol ☀️</p>
+				<p class="r1">Sos Hermosa ✨</p>
+				<p class="r2">Estar siempre contigo es lo mejor 🤗</p>
+			</div>
+
+			<div class="reasons" aria-hidden="true">
+				<div class="reason">Tu sonrisa</div>
+				<div class="reason">Tu fuerza</div>
+				<div class="reason">Tu no paciencia</div>
+				<div class="reason">Tus consejos</div>
+			</div>
+
+			<canvas id="confetti" width="800" height="400" aria-hidden="true"></canvas>
+
+			<p style="margin-top:18px; color:#7a2b47; font-style:italic;">Gracias por todo lo que nos das; hoy celebramos todo lo que eres 💐</p>
+			<div class="controls" aria-hidden="true">
+				<button id="popupBtn">Enviar abrazo virtual</button>
+				<button id="colorBtn">Cambiar color</button>    
+				<button id="surpriseBtn" aria-haspopup="dialog" aria-controls="surpriseDialog">Abrir sorpresa 🎁</button>
+			</div>
+
+			<small class="credit" >Sos Hermosa ❤️</small>
+
+			<!-- Surprise dialog markup (hidden by default) -->
+			<div id="surpriseDialog" role="dialog" aria-modal="true" aria-labelledby="surpriseTitle" aria-hidden="true" class="dialog" tabindex="-1">
+				<div class="dialog-panel" role="document">
+					<button class="dialog-close" aria-label="Cerrar sorpresa">✕</button>
+					<h2 id="surpriseTitle">¡Tu sorpresa de cumpleaños! 🎊</h2>
+
+					<section class="surprise-section">
+						<h3>Mensajitos de amor</h3>
+						<ul class="messages">
+							<li>Te queremos con todo el corazón ❤️</li>
+							<li>Eres la luz que nos guía siempre ✨</li>
+							<li>Tu ternura nos hace mejores cada día 🌸</li>
+						</ul>
+					</section>
+
+					<section class="surprise-section">
+						<h3>Poema para mamá</h3>
+						<blockquote class="poem">En tu abrazo encontré mi paz,<br>en tu voz, el camino volver a andar.<br>Hoy celebramos tu vida y tu amor sin final.</blockquote>
+					</section>
+
+					<section class="surprise-section gallery">
+						<h3>Galería de recuerdos</h3>
+						<div class="thumbs" aria-hidden="false">
+							<div class="thumb" style="background-image:url('mama-foto.jpg')" title="Foto querida">Foto querida</div>
+							<div class="thumb" style="background:linear-gradient(135deg,#ffe6f0,#ffdede);" title="Recuerdo 1">Recuerdo</div>
+							<div class="thumb" style="background:linear-gradient(135deg,#fff7cc,#ffd1d1);" title="Recuerdo 2">Recuerdo</div>
+						</div>
+					</section>
+
+					<section class="surprise-section">
+						<h3>Razones por las que te amamos</h3>
+						<div class="reasons small">
+							<div class="reason">Tu ternura</div>
+							<div class="reason">Tus abrazos</div>
+							<div class="reason">Tu sonrisa</div>
+							<div class="reason">Tu ejemplo</div>
+						</div>
+					</section>
+
+					<div class="dialog-actions">
+						<button id="sendKiss" class="accent">Enviar beso 😘</button>
+						<button id="downloadCard">Descargar tarjeta</button>
+					</div>
+				</div>
+			</div>
+
+			<div class="hearts" id="hearts">
+				<!-- multiple hearts placed in different positions -->
+				<svg class="heart h1" viewBox="0 0 24 24" fill="#ff3b6f" aria-hidden="true"><path d="M12 21s-7.5-4.7-10-8.1c-1.6-2.2-.9-5.7 1.8-6.8 1.6-.7 3.5-.2 4.6 1l.9 1 .9-1c1.2-1.2 2.9-1.5 4.4-1 2.7 1.1 3.4 4.6 1.8 6.8C19.5 16.3 12 21 12 21z"></path></svg>
+				<svg class="heart h2" viewBox="0 0 24 24" fill="#ff6b88" aria-hidden="true"><path d="M12 21s-7.5-4.7-10-8.1c-1.6-2.2-.9-5.7 1.8-6.8 1.6-.7 3.5-.2 4.6 1l.9 1 .9-1c1.2-1.2 2.9-1.5 4.4-1 2.7 1.1 3.4 4.6 1.8 6.8C19.5 16.3 12 21 12 21z"></path></svg>
+				<svg class="heart h3" viewBox="0 0 24 24" fill="#ff416c" aria-hidden="true"><path d="M12 21s-7.5-4.7-10-8.1c-1.6-2.2-.9-5.7 1.8-6.8 1.6-.7 3.5-.2 4.6 1l.9 1 .9-1c1.2-1.2 2.9-1.5 4.4-1 2.7 1.1 3.4 4.6 1.8 6.8C19.5 16.3 12 21 12 21z"></path></svg>
+				<svg class="heart h4" viewBox="0 0 24 24" fill="#ff7b9b" aria-hidden="true"><path d="M12 21s-7.5-4.7-10-8.1c-1.6-2.2-.9-5.7 1.8-6.8 1.6-.7 3.5-.2 4.6 1l.9 1 .9-1c1.2-1.2 2.9-1.5 4.4-1 2.7 1.1 3.4 4.6 1.8 6.8C19.5 16.3 12 21 12 21z"></path></svg>
+				<svg class="heart h5" viewBox="0 0 24 24" fill="#ff4a91" aria-hidden="true"><path d="M12 21s-7.5-4.7-10-8.1c-1.6-2.2-.9-5.7 1.8-6.8 1.6-.7 3.5-.2 4.6 1l.9 1 .9-1c1.2-1.2 2.9-1.5 4.4-1 2.7 1.1 3.4 4.6 1.8 6.8C19.5 16.3 12 21 12 21z"></path></svg>
+				<svg class="heart h6" viewBox="0 0 24 24" fill="#ff2b5c" aria-hidden="true"><path d="M12 21s-7.5-4.7-10-8.1c-1.6-2.2-.9-5.7 1.8-6.8 1.6-.7 3.5-.2 4.6 1l.9 1 .9-1c1.2-1.2 2.9-1.5 4.4-1 2.7 1.1 3.4 4.6 1.8 6.8C19.5 16.3 12 21 12 21z"></path></svg>
+				<svg class="heart h7" viewBox="0 0 24 24" fill="#ff6b88" aria-hidden="true"><path d="M12 21s-7.5-4.7-10-8.1c-1.6-2.2-.9-5.7 1.8-6.8 1.6-.7 3.5-.2 4.6 1l.9 1 .9-1c1.2-1.2 2.9-1.5 4.4-1 2.7 1.1 3.4 4.6 1.8 6.8C19.5 16.3 12 21 12 21z"></path></svg>
+				<svg class="heart h8" viewBox="0 0 24 24" fill="#ff416c" aria-hidden="true"><path d="M12 21s-7.5-4.7-10-8.1c-1.6-2.2-.9-5.7 1.8-6.8 1.6-.7 3.5-.2 4.6 1l.9 1 .9-1c1.2-1.2 2.9-1.5 4.4-1 2.7 1.1 3.4 4.6 1.8 6.8C19.5 16.3 12 21 12 21z"></path></svg>
+			</div>
+
+		</main>
+
+		<script>
+			// small interactive touches: spawn a temporary floating heart when button clicked
+			const hearts = document.getElementById('hearts');
+			const popupBtn = document.getElementById('popupBtn');
+			const colorBtn = document.getElementById('colorBtn');
+
+			popupBtn.addEventListener('click', () => {
+				const el = document.createElementNS('http://www.w3.org/2000/svg','svg');
+				el.setAttribute('viewBox','0 0 24 24');
+				el.setAttribute('fill','#ff2b5c');
+				el.className.baseVal = 'heart';
+				el.style.left = (20 + Math.random()*60) + '%';
+				el.style.bottom = '10%';
+				el.style.animationDuration = (4 + Math.random()*4) + 's';
+				el.innerHTML = '<path d="M12 21s-7.5-4.7-10-8.1c-1.6-2.2-.9-5.7 1.8-6.8 1.6-.7 3.5-.2 4.6 1l.9 1 .9-1c1.2-1.2 2.9-1.5 4.4-1 2.7 1.1 3.4 4.6 1.8 6.8C19.5 16.3 12 21 12 21z"/>';
+				hearts.appendChild(el);
+				setTimeout(()=> el.remove(), 4500);
+				// confetti burst for celebration
+				launchConfetti();
+			});
+
+			// switch accent colors (simple fun touch)
+			colorBtn.addEventListener('click', ()=>{
+				document.documentElement.style.setProperty('--accent', '#' + Math.floor(Math.random()*16777215).toString(16));
+				document.documentElement.style.setProperty('--accent2', '#' + Math.floor(Math.random()*16777215).toString(16));
+			});
+
+			// Rotating nice messages
+			(function rotating(){
+				const messages = document.querySelectorAll('.rotator p');
+				let i = 0;
+				setInterval(()=>{
+					messages.forEach((m, idx)=> m.classList.toggle('active', idx===i));
+					i = (i + 1) % messages.length;
+				}, 3000);
+			})();
+
+			// small confetti implementation using the canvas
+			const canvas = document.getElementById('confetti');
+			const ctx = canvas && canvas.getContext ? canvas.getContext('2d') : null;
+			let confettiPieces = [];
+			function resizeCanvas(){
+				if(!canvas) return;
+				canvas.width = canvas.clientWidth || canvas.offsetWidth || 800;
+				canvas.height = canvas.clientHeight || canvas.offsetHeight || 400;
+			}
+			window.addEventListener('resize', resizeCanvas);
+			resizeCanvas();
+
+			function makePiece(x,y){
+				const colors = ['#ff637d','#ffd166','#ffd1e0','#ff8fb1','#ff416c'];
+				return {
+					x,y,
+					vx: (Math.random()-0.5)*6,
+					vy: - (6 + Math.random()*8),
+					size: 6 + Math.random()*8,
+					color: colors[Math.floor(Math.random()*colors.length)],
+					rot: Math.random()*360,
+					wobble: Math.random()*0.08 + 0.04
+				};
+			}
+
+			function launchConfetti(){
+				if(!ctx) return;
+				const cx = canvas.width/2;
+				const cy = canvas.height*0.8;
+				for(let i=0;i<40;i++) confettiPieces.push(makePiece(cx + (Math.random()-0.5)*200, cy + (Math.random()-0.5)*50));
+				if(!confettiAnimating) { confettiAnimating = true; requestAnimationFrame(confettiLoop); }
+			}
+
+			let confettiAnimating = false;
+			function confettiLoop(){
+				if(!ctx) return;
+				ctx.clearRect(0,0,canvas.width,canvas.height);
+				confettiPieces.forEach((p, idx)=>{
+					p.vy += 0.18; p.x += p.vx; p.y += p.vy; p.rot += p.wobble*10;
+					ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot*Math.PI/180);
+					ctx.fillStyle = p.color; ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size*0.66);
+					ctx.restore();
+				});
+				confettiPieces = confettiPieces.filter(p=> p.y < canvas.height + 40);
+				if(confettiPieces.length>0) requestAnimationFrame(confettiLoop); else confettiAnimating=false;
+			}
+
+			// Launch a small confetti at page load to brighten the moment
+			setTimeout(()=> launchConfetti(), 600);
+
+			/* Surprise dialog behavior and accessibility */
+			const surpriseBtn = document.getElementById('surpriseBtn');
+			const surpriseDialog = document.getElementById('surpriseDialog');
+			const dialogClose = surpriseDialog && surpriseDialog.querySelector('.dialog-close');
+			const sendKiss = document.getElementById('sendKiss');
+			const downloadCard = document.getElementById('downloadCard');
+			let lastFocused = null;
+
+			function openDialog(){
+				if(!surpriseDialog) return;
+				lastFocused = document.activeElement;
+				surpriseDialog.setAttribute('aria-hidden','false');
+				// focus panel for keyboard users
+				const panel = surpriseDialog.querySelector('.dialog-panel');
+				panel.setAttribute('tabindex','-1'); panel.focus();
+				document.body.style.overflow = 'hidden';
+				// trap focus
+				surpriseDialog.addEventListener('keydown', trapFocus);
+			}
+
+			function closeDialog(){
+				if(!surpriseDialog) return;
+				surpriseDialog.setAttribute('aria-hidden','true');
+				document.body.style.overflow = '';
+				surpriseDialog.removeEventListener('keydown', trapFocus);
+				// restore focus
+				if(lastFocused) lastFocused.focus();
+			}
+
+			surpriseBtn && surpriseBtn.addEventListener('click', openDialog);
+			dialogClose && dialogClose.addEventListener('click', closeDialog);
+
+			// Close dialog with Esc when open
+			document.addEventListener('keydown', (ev)=>{
+				if(ev.key === 'Escape' && surpriseDialog && surpriseDialog.getAttribute('aria-hidden') === 'false'){
+					closeDialog();
+				}
+			});
+
+			// Very small focus-trap implementation
+			function trapFocus(e){
+				if(e.key !== 'Tab') return;
+				const focusable = surpriseDialog.querySelectorAll('button, a[href], textarea, input, select, [tabindex]:not([tabindex="-1"])');
+				if(focusable.length === 0) return;
+				const first = focusable[0];
+				const last = focusable[focusable.length - 1];
+				if(e.shiftKey && document.activeElement === first){
+					e.preventDefault(); last.focus();
+				} else if(!e.shiftKey && document.activeElement === last){
+					e.preventDefault(); first.focus();
+				}
+			}
+
+			// small audio + extra confetti when sending a kiss
+			function playKissTone(){
+				try{
+					const ctx = new (window.AudioContext || window.webkitAudioContext)();
+					const o = ctx.createOscillator();
+					const g = ctx.createGain();
+					o.type = 'sine'; o.frequency.value = 880; g.gain.setValueAtTime(0.0001, ctx.currentTime);
+					g.gain.exponentialRampToValueAtTime(0.25, ctx.currentTime + 0.02);
+					g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.5);
+					o.connect(g); g.connect(ctx.destination); o.start(); setTimeout(()=> o.stop(), 520);
+				}catch(e){/* audio not available */}
+			}
+
+			sendKiss && sendKiss.addEventListener('click', ()=>{
+				// small visual feedback: temporary message and confetti
+				playKissTone();
+				launchConfetti();
+				const panel = surpriseDialog.querySelector('.dialog-panel');
+				const note = document.createElement('div');
+				note.textContent = '¡Beso enviado! 😘';
+				note.style.cssText = 'position:relative;margin-top:8px;padding:8px;border-radius:8px;background:#fff3f6;color:#8c1a45;font-weight:700;text-align:center;';
+				panel.appendChild(note);
+				setTimeout(()=> note.remove(), 1600);
+			});
+
+			// Download a small printable card (opens in new window for printing)
+			downloadCard && downloadCard.addEventListener('click', ()=>{
+				const html = `<!doctype html><html><head><meta charset="utf-8"><title>Tarjeta para Mamá</title><style>body{font-family:Arial,Helvetica,sans-serif;text-align:center;padding:40px;background:linear-gradient(180deg,#fff6f8,#fff);color:#7a2340} .card{border-radius:12px;padding:30px;border:4px solid #ffd1df;display:inline-block;background:white} h1{color:#e53b6d;margin:8px 0} p{margin:6px 0}</style></head><body><div class="card"><h1>¡Feliz Cumpleaños Mamá! 🎉</h1><p>Tu familia te quiere mucho.</p><p>Gracias por todo tu amor y ternura.</p></div></body></html>`;
+				const w = window.open('','_blank');
+				if(!w) return alert('Permite ventanas emergentes para descargar la tarjeta.');
+				w.document.open(); w.document.write(html); w.document.close();
+			});
+		</script>
+	</body>
+</html>
