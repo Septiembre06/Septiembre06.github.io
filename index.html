@@ -1,375 +1,287 @@
 <!doctype html>
 <html lang="es">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width,initial-scale=1" />
-		<title>Felicidades Mamá</title>
-		<style>
-			:root{--bg1:#ffecd2;--bg2:#fcb69f;--accent:#ff416c;--accent2:#ff6b6b}
-			*{box-sizing:border-box}
-			html,body{height:100%}
-			body{
-				margin:0;
-				font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
-				display:flex;align-items:center;justify-content:center;
-				/* show user-provided photo as page background (save file as mama-foto.jpg in same folder)
-					 we keep a soft translucent white overlay so text and UI remain readable */
-				background: linear-gradient(rgba(255,255,255,0.36), rgba(255,255,255,0.36)), url('mama-foto.jpg') center/cover no-repeat fixed, linear-gradient(135deg,var(--bg1),var(--bg2));
-				color:#2b2b2b;
-			}
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Tienda de Dulces - Hecho por tu hermana</title>
+    <style>
+      :root{--accent:#e83b6b;--accent2:#ffb3c9;--bg:#fff5f8;--card:#ffffff}
+      html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;color:#3b2b33;background:linear-gradient(180deg,#fff8fb,#fff)}
+      .wrap{max-width:1060px;margin:36px auto;padding:28px;background:linear-gradient(180deg,var(--bg),#fff);border-radius:18px;box-shadow:0 20px 50px rgba(0,0,0,0.08);}
+      header{display:flex;align-items:center;justify-content:space-between;gap:18px}
+      .brand{display:flex;align-items:center;gap:14px}
+      .logo{width:70px;height:70px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-size:20px}
+      h1{font-size:clamp(1.4rem,3vw,2.8rem);margin:0;color:#a3003a}
+      .tag{color:#7b2a45;opacity:0.9}
 
-			.card{
-				width:min(980px,94vw);
-				padding:36px;
-				border-radius:20px;
-				background:rgba(255,255,255,0.85);
-				box-shadow:0 10px 30px rgba(0,0,0,0.12);
-				text-align:center;
-				position:relative;overflow:hidden;
-			}
+      .hero{display:grid;grid-template-columns:1fr 420px;gap:22px;margin-top:18px;align-items:start}
+      .hero p{margin:8px 0;font-size:1.05rem;color:#5a3a45}
+      .call{display:flex;gap:10px}
+      .btn{display:inline-block;background:linear-gradient(90deg,var(--accent),#ff6ea2);color:white;padding:10px 16px;border-radius:999px;border:0;font-weight:700;cursor:pointer}
+      .btn.secondary{background:transparent;border:2px solid rgba(163,3,58,0.08);color:#7b2a45}
 
-			h1{
-				font-size:clamp(3rem,9vw,6.5rem);
-				margin:0 0 6px 0;
-				line-height:0.92;
-				letter-spacing:0.3px;
-				color:transparent;
-				/* big shiny gradient text */
-				background: linear-gradient(90deg,#ff2b5c,#ff7b9b,#ffd1e0);
-				-webkit-background-clip: text;
-				background-clip:text;
-				-webkit-text-fill-color:transparent;
-				text-shadow:0 6px 18px rgba(255,80,120,0.14), 0 1px 0 rgba(255,255,255,0.25) inset;
-				font-weight:800;
-			}
+      .card{background:var(--card);padding:14px;border-radius:12px}
+      .product-grid{margin-top:22px;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+      .product{background:linear-gradient(180deg,#fff,#fff5f7);border-radius:12px;padding:12px;border:1px solid rgba(0,0,0,0.03);text-align:center}
+      .product .img{height:130px;background:#fbeff3;border-radius:10px;background-size:cover;background-position:center;margin-bottom:8px}
+      .product h4{margin:6px 0;color:#7b1c3a}
+      .price{font-weight:800;color:#c5204b}
+      .small{font-size:0.86rem;color:#6d4b52}
+      .actions{display:flex;gap:6px;justify-content:center;margin-top:8px}
+      .actions button{padding:8px 10px;border-radius:8px;border:0;cursor:pointer}
+      .add{background:linear-gradient(90deg,#ff8fb1,#ff416c);color:white;font-weight:700}
+      .contact{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-top:22px}
+      .contact .box{flex:1;background:linear-gradient(180deg,#fff,#fff8fa);padding:10px;border-radius:10px;border:1px solid rgba(0,0,0,0.03)}
 
-			p.lead{font-size:1.15rem; margin:0 0 18px 0; color:#333}
+      footer{margin-top:20px;text-align:center;color:#6c4950;font-size:0.9rem}
 
-			/* rotating nice messages */
-			.rotator{height:40px;margin-top:6px;margin-bottom:6px;display:flex;align-items:center;justify-content:center;overflow:hidden}
-			.rotator p{margin:0;padding:0 8px;font-weight:700;color:#8c1a45;opacity:0;transform:translateY(6px);transition:all .5s ease}
-			.rotator p.active{opacity:1;transform:translateY(0)}
+      @media (max-width:880px){.hero{grid-template-columns:1fr;}}
 
-			/* small reasons list */
-			.reasons{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:12px}
-			.reasons .reason{background:linear-gradient(120deg,#fff6f8,#ffeef2);padding:8px 12px;border-radius:999px;border:1px solid rgba(255,90,120,0.08);font-weight:600;color:#9b1b48;box-shadow:0 6px 18px rgba(255,80,120,0.06)}
+      /* Estilos para el menú desplegable en la esquina superior derecha */
+      .top-menu .menu-dropdown{position:absolute;right:0;top:calc(100% + 10px);background:linear-gradient(180deg,#fff,#fff8f6);padding:10px;border-radius:10px;box-shadow:0 12px 40px rgba(0,0,0,0.14);border:1px solid rgba(0,0,0,0.05);min-width:170px;display:flex;flex-direction:column;gap:8px;z-index:9999}
+      .top-menu .menu-dropdown[hidden]{display:none}
+      .menu-item{background:transparent;border:0;padding:8px 10px;border-radius:8px;text-align:left;cursor:pointer;font-weight:700;color:#3b1206}
+      .menu-item:hover{background:linear-gradient(90deg,#ffefe0,#ffe2d1)}
+      @media (max-width:520px){.top-menu .menu-dropdown{right:8px;left:8px;min-width:auto}}
 
-			/* confetti canvas fixed on top of card */
-			#confetti{position:absolute;inset:0;pointer-events:none}
+      /* Catálogo y visibilidad de productos */
+      #catalog-panel{transition:all .18s ease}
+      .product.hidden{display:none;opacity:0;transform:scale(.98);}
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <div class="brand">
+          <div class="logo">D </div>
+          <div>
+            <h1>Tienda de Dulces - Hecho con amor</h1>
+            <div class="tag">Productos caseros, pedidos y delivery local</div>
+          </div>
+        </div>
+        <div class="header-actions" style="display:flex;align-items:center;gap:10px;position:relative">
+          <div style="display:flex;align-items:center;gap:10px">
+            <strong>Tel:</strong>
+            <a href="tel:51225974" style="color:#a3003a; text-decoration:none">51225974</a>
+          </div>
 
-			.hearts{position:absolute;inset:0;pointer-events:none}
+          <!-- Botón "Menu" (esquina superior derecha) -->
+          <div class="top-menu" style="position:relative">
+            <button id="top-menu-btn" class="btn secondary" aria-expanded="false" aria-controls="top-menu-dropdown">Menu ▾</button>
+            <div id="top-menu-dropdown" class="menu-dropdown" role="menu" aria-label="Menú de categorías" hidden>
+              <button class="menu-item" data-cat="dulces" role="menuitem">Dulces</button>
+              <button class="menu-item" data-cat="churros" role="menuitem">Churros</button>
+              <button class="menu-item" data-cat="rosquillas" role="menuitem">Rosquillas</button>
+              <button class="menu-item" data-cat="donas" role="menuitem">Donas</button>
+            </div>
+          </div>
+        </div>
+      </header>
 
-			.heart{
-				position:absolute; width:44px;height:44px; transform:rotate(45deg);
-				left:50%; top:50%; margin:-22px 0 0 -22px; opacity:0.95;
-				animation:floatUp linear infinite;
-			}
+      <!-- Se quitó el modal inicial — reemplazado por un menú desplegable en el encabezado -->
 
-			.heart *{filter:drop-shadow(0 6px 8px rgba(0,0,0,0.08))}
+      <div class="hero">
+        <div>
+          <p>Bienvenida/o a la tienda de dulces DaniSweet — aquí encontrarás una gran variedad de ofertas.</p>
 
-			@keyframes floatUp{
-				0%{transform:translateY(10px) rotate(45deg) scale(0.85); opacity:0}
-				10%{opacity:1}
-				100%{transform:translateY(-420px) rotate(45deg) scale(1.05); opacity:0}
-			}
+          <div class="card">
+              <h3 style="margin:0 0 8px 0;color:#8b1f44"><button id="view-catalog-btn" style="background:transparent;border:0;color:inherit;font-weight:800;cursor:pointer;padding:0">Ver catálogo</button></h3>
+              <!-- Panel de catálogo oculto - se muestra al pulsar 'Ver catálogo' -->
+              <div id="catalog-panel" class="card" style="display:none;margin-top:12px">
+                <h4 style="margin:0 0 8px 0;color:#7b1c3a">Elige una categoría</h4>
+                <div style="display:flex;flex-wrap:wrap;gap:8px">
+                  <button class="catalog-category btn secondary" data-cat="dulces">Dulces</button>
+                  <button class="catalog-category btn secondary" data-cat="churros">Churros</button>
+                  <button class="catalog-category btn secondary" data-cat="rosquillas">Rosquillas</button>
+                  <button class="catalog-category btn secondary" data-cat="donas">Donas</button>
+                  <button id="catalog-show-all" class="btn" style="margin-left:6px">Mostrar todo</button>
+                </div>
+              </div>
+            <div class="product-grid" id="products">
+              <!-- Tres productos de ejemplo — reemplaza las imágenes por tus propios archivos en la misma carpeta -->
+                <!-- Productos de ejemplo con categoría (data-cat) -->
+                <article class="product" data-cat="dulces">
+                  <div class="img" style="background-image:url('dulce1.svg')"></div>
+                  <h4>Alfajor de dulce de leche</h4>
+                  <div class="small">Casero, relleno abundante</div>
+                  <div class="price">$320</div>
+                  <div class="actions"><button class="add">Añadir</button> <button class="secondary">Ver</button></div>
+                </article>
 
-			/* create many hearts with different positions and durations */
-			.h1{left:8%; bottom:8%; animation-duration:6s; animation-delay:0s;}
-			.h2{left:20%; bottom:10%; animation-duration:7s; animation-delay:0.6s; transform-origin:center;}
-			.h3{left:34%; bottom:6%; animation-duration:8s; animation-delay:0.2s}
-			.h4{left:52%; bottom:10%; animation-duration:5.8s; animation-delay:0.3s}
-			.h5{left:68%; bottom:3%; animation-duration:6.9s; animation-delay:0.9s}
-			.h6{left:85%; bottom:9%; animation-duration:7.5s; animation-delay:0.4s}
-			.h7{left:40%; bottom:18%; animation-duration:6.4s; animation-delay:0.7s}
-			.h8{left:12%; bottom:24%; animation-duration:8.2s; animation-delay:0.5s}
+                <article class="product" data-cat="churros">
+                  <div class="img" style="background-image:url('churro.svg')"></div>
+                  <h4>Churros rellenos</h4>
+                  <div class="small">Relleno de dulce de leche o crema</div>
+                  <div class="price">$180</div>
+                  <div class="actions"><button class="add">Añadir</button> <button class="secondary">Ver</button></div>
+                </article>
 
-			.controls{display:flex;gap:12px;justify-content:center;margin-top:12px}
+                <article class="product" data-cat="rosquillas">
+                  <div class="img" style="background-image:url('rosquilla.svg')"></div>
+                  <h4>Rosquilla casera</h4>
+                  <div class="small">Suave y esponjosa, receta familiar</div>
+                  <div class="price">$90</div>
+                  <div class="actions"><button class="add">Añadir</button> <button class="secondary">Ver</button></div>
+                </article>
 
-			button{appearance:none;border:0;background:linear-gradient(90deg,var(--accent),var(--accent2));
-				color:white;padding:10px 16px;border-radius:999px;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(255,65,108,0.14)}
+                <article class="product" data-cat="donas">
+                  <div class="img" style="background-image:url('dona.svg')"></div>
+                  <h4>Dona glaseada</h4>
+                  <div class="small">Clásica, con cobertura dulce</div>
+                  <div class="price">$110</div>
+                  <div class="actions"><button class="add">Añadir</button> <button class="secondary">Ver</button></div>
+                </article>
 
-			small.credit{display:block;margin-top:18px;color:#6e6e6e}
+            </div>
+          </div>
 
-			/* responsive */
-			@media (max-width:540px){.card{padding:22px}}
+          <div style="margin-top:14px;display:flex;gap:10px;align-items:center">
+            <button class="btn">Haz tu pedido</button>
+            <button class="btn secondary">Ver catálogo completo</button>
+          </div>
 
-			/* dialog / surprise panel styles */
-			.dialog{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:20px;transition:opacity .18s ease;opacity:0;pointer-events:none;background:linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35));}
-			.dialog[aria-hidden="false"]{opacity:1;pointer-events:auto}
-			.dialog-panel{width:min(840px,96vw);max-height:86vh;overflow:auto;padding:22px;border-radius:14px;background:linear-gradient(180deg,#fff #fff);box-shadow:0 22px 50px rgba(20,20,40,0.35);border:1px solid rgba(255,180,200,0.06)}
-			.dialog-close{position:absolute;right:18px;top:18px;background:transparent;border:0;font-size:20px;cursor:pointer;color:#6b223d}
-			.surprise-section{margin:10px 0}
-			.surprise-section h3{margin:0 0 8px 0;color:#9b1b48}
-			.messages{list-style:none;margin:0;padding:0;display:block}
-			.messages li{margin:6px 0;padding:8px;border-radius:10px;background:linear-gradient(90deg,#fff0f3,#fff8f9);color:#6b223d}
-			.poem{background:#fff6f8;padding:10px;border-radius:8px;border-left:3px solid #ffb3c9;margin:0;color:#9b1b48}
-			.thumbs{display:flex;gap:10px;align-items:center}
-			.thumb{width:110px;height:72px;border-radius:8px;background-size:cover;background-position:center;border:2px solid rgba(255,255,255,0.5);display:flex;align-items:center;justify-content:center;color:#6b223d;font-weight:700}
-			.reasons.small .reason{padding:6px 8px;font-size:0.9rem}
-			.dialog-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:14px}
-			button.accent{background:linear-gradient(90deg,#ff7b9b,#ff416c);color:white}
-		</style>
-	</head>
-	<body>
-		<main class="card" role="main" aria-labelledby="main-title">
-			<h1 id="main-title">¡Felicidades, mamá! 💖</h1>
-			<p class="lead">tu familia te quiere mucho</p>
-			<div class="rotator" aria-hidden="true">
-				<p class="r0 active">Eres nuestro sol ☀️</p>
-				<p class="r1">Sos Hermosa ✨</p>
-				<p class="r2">Estar siempre contigo es lo mejor 🤗</p>
-			</div>
+        </div>
 
-			<div class="reasons" aria-hidden="true">
-				<div class="reason">Tu sonrisa</div>
-				<div class="reason">Tu fuerza</div>
-				<div class="reason">Tu no paciencia</div>
-				<div class="reason">Tus consejos</div>
-			</div>
+        <aside class="card">
+          <h3 style="margin:0 0 6px 0;color:#8b1f44">Contacto rápido</h3>
+          <p style="margin:6px 0" class="small">Pide por teléfono o escribe por WhatsApp. Entregas en el área local, recogida en punto sin cargo.</p>
+          <!-- Dirección física colocada arriba para alinearse con 'Ver catálogo' -->
+          <div style="margin-bottom:12px;text-align:left;color:#5a3a45">
+            <div style="font-weight:800;color:#7b1c3a">Dirección</div>
+            <div class="small">Radicamos en Cuba — Santiago de Cuba — El Caney — Fe del Valle 21 y medio, entre Padres de las Casas y Marta Abreu</div>
+          </div>
 
-			<canvas id="confetti" width="800" height="400" aria-hidden="true"></canvas>
+          <div class="contact">
+            <div class="box">
+              <strong>WhatsApp</strong>
+              <div style="margin-top:6px"><a href="https://api.whatsapp.com/qr/H4JMXAOBCH4UF1?autoload=1&app_absent=0" target="_blank" rel="noreferrer" style="color:#a3003a">Enviar mensaje</a></div>
+            </div>
+            <div class="box">
+              <strong>Horario</strong>
+              <div style="margin-top:6px" class="small">Lun-Vie 9:00–19:00 • Sáb 9:00–13:00</div>
+            </div>
+          </div>
 
-			<p style="margin-top:18px; color:#7a2b47; font-style:italic;">Gracias por todo lo que nos das; hoy celebramos todo lo que eres 💐</p>
-			<div class="controls" aria-hidden="true">
-				<button id="popupBtn">Enviar abrazo virtual</button>
-				<button id="colorBtn">Cambiar color</button>    
-				<button id="surpriseBtn" aria-haspopup="dialog" aria-controls="surpriseDialog">Abrir sorpresa 🎁</button>
-			</div>
+          <hr style="border:none;border-top:1px solid rgba(0,0,0,0.05);margin:12px 0">
+          <div style="text-align:center;">
+            <div style="font-weight:800;color:#c51849">Pago y envío</div>
+            <div class="small">Transferencia, efectivo y Pago Fácil. Envíos en 24–72h (según zona).</div>
+          </div>
+        </aside>
 
-			<small class="credit" >Sos Hermosa ❤️</small>
+      </div>
 
-			<!-- Surprise dialog markup (hidden by default) -->
-			<div id="surpriseDialog" role="dialog" aria-modal="true" aria-labelledby="surpriseTitle" aria-hidden="true" class="dialog" tabindex="-1">
-				<div class="dialog-panel" role="document">
-					<button class="dialog-close" aria-label="Cerrar sorpresa">✕</button>
-					<h2 id="surpriseTitle">¡Tu sorpresa de cumpleaños! 🎊</h2>
+      <section style="margin-top:24px;">
+        <h3 style="color:#8b1f44">Por qué comprar en la Tienda</h3>
+        <ul style="margin:8px 0 0 20px;color:#5a3a45">
+          <li>Productos hechos a mano con ingredientes de primera calidad</li>
+          <li>Opciones para celiacos y alergias (solicitar disponible)</li>
+          <li>Personalización de cajas para eventos y cumpleaños</li>
+        </ul>
+      </section>
 
-					<section class="surprise-section">
-						<h3>Mensajitos de amor</h3>
-						<ul class="messages">
-							<li>Te queremos con todo el corazón ❤️</li>
-							<li>Eres la luz que nos guía siempre ✨</li>
-							<li>Tu ternura nos hace mejores cada día 🌸</li>
-						</ul>
-					</section>
+      <footer>
+        © Tu hermana - Tienda de Dulces • Personaliza esta página con tus propias fotos y precios
+      </footer>
+    </div>
 
-					<section class="surprise-section">
-						<h3>Poema para mamá</h3>
-						<blockquote class="poem">En tu abrazo encontré mi paz,<br>en tu voz, el camino volver a andar.<br>Hoy celebramos tu vida y tu amor sin final.</blockquote>
-					</section>
+    <script>
+      // Menú superior derecho: alternar desplegable y manejar selecciones
+      (function(){
+        const btn = document.getElementById('top-menu-btn');
+        const dd = document.getElementById('top-menu-dropdown');
 
-					<section class="surprise-section gallery">
-						<h3>Galería de recuerdos</h3>
-						<div class="thumbs" aria-hidden="false">
-							<div class="thumb" style="background-image:url('mama-foto.jpg')" title="Foto querida">Foto querida</div>
-							<div class="thumb" style="background:linear-gradient(135deg,#ffe6f0,#ffdede);" title="Recuerdo 1">Recuerdo</div>
-							<div class="thumb" style="background:linear-gradient(135deg,#fff7cc,#ffd1d1);" title="Recuerdo 2">Recuerdo</div>
-						</div>
-					</section>
+        function closeDropdown(){ btn.setAttribute('aria-expanded','false'); dd.hidden = true; }
+        function openDropdown(){ btn.setAttribute('aria-expanded','true'); dd.hidden = false; }
 
-					<section class="surprise-section">
-						<h3>Razones por las que te amamos</h3>
-						<div class="reasons small">
-							<div class="reason">Tu ternura</div>
-							<div class="reason">Tus abrazos</div>
-							<div class="reason">Tu sonrisa</div>
-							<div class="reason">Tu ejemplo</div>
-						</div>
-					</section>
+        btn.addEventListener('click', (e)=>{
+          const isOpen = btn.getAttribute('aria-expanded') === 'true';
+          if(isOpen) closeDropdown(); else openDropdown();
+        });
 
-					<div class="dialog-actions">
-						<button id="sendKiss" class="accent">Enviar beso 😘</button>
-						<button id="downloadCard">Descargar tarjeta</button>
-					</div>
-				</div>
-			</div>
+        // clic fuera -> cerrar
+        document.addEventListener('click', (e)=>{
+          if(!btn.contains(e.target) && !dd.contains(e.target)) closeDropdown();
+        });
 
-			<div class="hearts" id="hearts">
-				<!-- multiple hearts placed in different positions -->
-				<svg class="heart h1" viewBox="0 0 24 24" fill="#ff3b6f" aria-hidden="true"><path d="M12 21s-7.5-4.7-10-8.1c-1.6-2.2-.9-5.7 1.8-6.8 1.6-.7 3.5-.2 4.6 1l.9 1 .9-1c1.2-1.2 2.9-1.5 4.4-1 2.7 1.1 3.4 4.6 1.8 6.8C19.5 16.3 12 21 12 21z"></path></svg>
-				<svg class="heart h2" viewBox="0 0 24 24" fill="#ff6b88" aria-hidden="true"><path d="M12 21s-7.5-4.7-10-8.1c-1.6-2.2-.9-5.7 1.8-6.8 1.6-.7 3.5-.2 4.6 1l.9 1 .9-1c1.2-1.2 2.9-1.5 4.4-1 2.7 1.1 3.4 4.6 1.8 6.8C19.5 16.3 12 21 12 21z"></path></svg>
-				<svg class="heart h3" viewBox="0 0 24 24" fill="#ff416c" aria-hidden="true"><path d="M12 21s-7.5-4.7-10-8.1c-1.6-2.2-.9-5.7 1.8-6.8 1.6-.7 3.5-.2 4.6 1l.9 1 .9-1c1.2-1.2 2.9-1.5 4.4-1 2.7 1.1 3.4 4.6 1.8 6.8C19.5 16.3 12 21 12 21z"></path></svg>
-				<svg class="heart h4" viewBox="0 0 24 24" fill="#ff7b9b" aria-hidden="true"><path d="M12 21s-7.5-4.7-10-8.1c-1.6-2.2-.9-5.7 1.8-6.8 1.6-.7 3.5-.2 4.6 1l.9 1 .9-1c1.2-1.2 2.9-1.5 4.4-1 2.7 1.1 3.4 4.6 1.8 6.8C19.5 16.3 12 21 12 21z"></path></svg>
-				<svg class="heart h5" viewBox="0 0 24 24" fill="#ff4a91" aria-hidden="true"><path d="M12 21s-7.5-4.7-10-8.1c-1.6-2.2-.9-5.7 1.8-6.8 1.6-.7 3.5-.2 4.6 1l.9 1 .9-1c1.2-1.2 2.9-1.5 4.4-1 2.7 1.1 3.4 4.6 1.8 6.8C19.5 16.3 12 21 12 21z"></path></svg>
-				<svg class="heart h6" viewBox="0 0 24 24" fill="#ff2b5c" aria-hidden="true"><path d="M12 21s-7.5-4.7-10-8.1c-1.6-2.2-.9-5.7 1.8-6.8 1.6-.7 3.5-.2 4.6 1l.9 1 .9-1c1.2-1.2 2.9-1.5 4.4-1 2.7 1.1 3.4 4.6 1.8 6.8C19.5 16.3 12 21 12 21z"></path></svg>
-				<svg class="heart h7" viewBox="0 0 24 24" fill="#ff6b88" aria-hidden="true"><path d="M12 21s-7.5-4.7-10-8.1c-1.6-2.2-.9-5.7 1.8-6.8 1.6-.7 3.5-.2 4.6 1l.9 1 .9-1c1.2-1.2 2.9-1.5 4.4-1 2.7 1.1 3.4 4.6 1.8 6.8C19.5 16.3 12 21 12 21z"></path></svg>
-				<svg class="heart h8" viewBox="0 0 24 24" fill="#ff416c" aria-hidden="true"><path d="M12 21s-7.5-4.7-10-8.1c-1.6-2.2-.9-5.7 1.8-6.8 1.6-.7 3.5-.2 4.6 1l.9 1 .9-1c1.2-1.2 2.9-1.5 4.4-1 2.7 1.1 3.4 4.6 1.8 6.8C19.5 16.3 12 21 12 21z"></path></svg>
-			</div>
+        // tecla Escape -> cerrar
+        document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeDropdown(); });
 
-		</main>
+        // manejar clics en los elementos del menú: filtrar catálogo
+        dd.querySelectorAll('.menu-item').forEach(b=>b.addEventListener('click', e=>{
+          const choice = e.currentTarget.getAttribute('data-cat');
+          closeDropdown();
+          filterProducts(choice);
+          toast('Has elegido: ' + choice);
+        }));
 
-		<script>
-			// small interactive touches: spawn a temporary floating heart when button clicked
-			const hearts = document.getElementById('hearts');
-			const popupBtn = document.getElementById('popupBtn');
-			const colorBtn = document.getElementById('colorBtn');
+        // asegurar cerrado inicialmente
+        closeDropdown();
+      })();
 
-			popupBtn.addEventListener('click', () => {
-				const el = document.createElementNS('http://www.w3.org/2000/svg','svg');
-				el.setAttribute('viewBox','0 0 24 24');
-				el.setAttribute('fill','#ff2b5c');
-				el.className.baseVal = 'heart';
-				el.style.left = (20 + Math.random()*60) + '%';
-				el.style.bottom = '10%';
-				el.style.animationDuration = (4 + Math.random()*4) + 's';
-				el.innerHTML = '<path d="M12 21s-7.5-4.7-10-8.1c-1.6-2.2-.9-5.7 1.8-6.8 1.6-.7 3.5-.2 4.6 1l.9 1 .9-1c1.2-1.2 2.9-1.5 4.4-1 2.7 1.1 3.4 4.6 1.8 6.8C19.5 16.3 12 21 12 21z"/>';
-				hearts.appendChild(el);
-				setTimeout(()=> el.remove(), 4500);
-				// confetti burst for celebration
-				launchConfetti();
-			});
+      // pequeño ayudante: mostrar notificación tipo toast
+      function toast(text){
+        const msg = document.createElement('div');
+        msg.textContent = text;
+        msg.style.cssText = 'position:fixed;right:18px;bottom:18px;background:linear-gradient(90deg,#ffd286,#ff8f6b);color:#380b05;padding:10px 14px;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,0.12);font-weight:700;z-index:9999';
+        document.body.appendChild(msg);
+        setTimeout(()=> msg.remove(),1400);
+      }
 
-			// switch accent colors (simple fun touch)
-			colorBtn.addEventListener('click', ()=>{
-				document.documentElement.style.setProperty('--accent', '#' + Math.floor(Math.random()*16777215).toString(16));
-				document.documentElement.style.setProperty('--accent2', '#' + Math.floor(Math.random()*16777215).toString(16));
-			});
+      // interacciones pequeñas: 'Añadir' muestra una notificación (no requiere backend)
+      document.querySelectorAll('.product .add').forEach(b=>b.addEventListener('click',()=>{
+        const msg = document.createElement('div');
+        msg.textContent = 'Añadido al pedido ❤️';
+        msg.style.cssText = 'position:fixed;right:18px;bottom:18px;background:linear-gradient(90deg,#ff8fb1,#ff416c);color:white;padding:10px 14px;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,0.15);font-weight:700;z-index:9999';
+        document.body.appendChild(msg);
+        setTimeout(()=> msg.remove(),1500);
+      }));
 
-			// Rotating nice messages
-			(function rotating(){
-				const messages = document.querySelectorAll('.rotator p');
-				let i = 0;
-				setInterval(()=>{
-					messages.forEach((m, idx)=> m.classList.toggle('active', idx===i));
-					i = (i + 1) % messages.length;
-				}, 3000);
-			})();
+      // permitir que 'Ver' abra un diálogo de vista previa del producto
+      document.querySelectorAll('.product .secondary').forEach(b=>b.addEventListener('click', (e)=>{
+        const product = b.closest('.product');
+        const title = product.querySelector('h4').textContent;
+        alert(title + '\n\nVer detalles y fotos reemplazando dulces por tus propias imágenes.');
+      }));
 
-			// small confetti implementation using the canvas
-			const canvas = document.getElementById('confetti');
-			const ctx = canvas && canvas.getContext ? canvas.getContext('2d') : null;
-			let confettiPieces = [];
-			function resizeCanvas(){
-				if(!canvas) return;
-				canvas.width = canvas.clientWidth || canvas.offsetWidth || 800;
-				canvas.height = canvas.clientHeight || canvas.offsetHeight || 400;
-			}
-			window.addEventListener('resize', resizeCanvas);
-			resizeCanvas();
+      // FILTRADO del catálogo y panel relacionado
+      function filterProducts(cat){
+        const products = document.querySelectorAll('.product');
+        if(!cat || cat === 'all'){
+          products.forEach(p=>p.classList.remove('hidden'));
+          return;
+        }
+        let found = false;
+        products.forEach(p=>{
+          if(p.dataset.cat === cat){ p.classList.remove('hidden'); found = true; }
+          else p.classList.add('hidden');
+        });
+        if(!found){ toast('No hay productos de ' + cat + ' por ahora.'); }
+        // hacer scroll al grid para que el usuario vea el resultado
+        const grid = document.getElementById('products');
+        if(grid){ grid.scrollIntoView({behavior:'smooth',block:'start'}); }
+      }
 
-			function makePiece(x,y){
-				const colors = ['#ff637d','#ffd166','#ffd1e0','#ff8fb1','#ff416c'];
-				return {
-					x,y,
-					vx: (Math.random()-0.5)*6,
-					vy: - (6 + Math.random()*8),
-					size: 6 + Math.random()*8,
-					color: colors[Math.floor(Math.random()*colors.length)],
-					rot: Math.random()*360,
-					wobble: Math.random()*0.08 + 0.04
-				};
-			}
+      // controlador para botón 'Ver catálogo' (muestra/oculta el panel de selección)
+      const viewBtn = document.getElementById('view-catalog-btn');
+      const catalogPanel = document.getElementById('catalog-panel');
+      if(viewBtn && catalogPanel){
+        viewBtn.addEventListener('click', ()=>{
+          const isVisible = catalogPanel.style.display !== 'none';
+          catalogPanel.style.display = isVisible ? 'none' : 'block';
+        });
 
-			function launchConfetti(){
-				if(!ctx) return;
-				const cx = canvas.width/2;
-				const cy = canvas.height*0.8;
-				for(let i=0;i<40;i++) confettiPieces.push(makePiece(cx + (Math.random()-0.5)*200, cy + (Math.random()-0.5)*50));
-				if(!confettiAnimating) { confettiAnimating = true; requestAnimationFrame(confettiLoop); }
-			}
+        // seleccionar una categoría desde el panel
+        catalogPanel.querySelectorAll('.catalog-category').forEach(b=>b.addEventListener('click', e=>{
+          const cat = e.currentTarget.getAttribute('data-cat');
+          filterProducts(cat);
+          catalogPanel.style.display = 'none';
+        }));
 
-			let confettiAnimating = false;
-			function confettiLoop(){
-				if(!ctx) return;
-				ctx.clearRect(0,0,canvas.width,canvas.height);
-				confettiPieces.forEach((p, idx)=>{
-					p.vy += 0.18; p.x += p.vx; p.y += p.vy; p.rot += p.wobble*10;
-					ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot*Math.PI/180);
-					ctx.fillStyle = p.color; ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size*0.66);
-					ctx.restore();
-				});
-				confettiPieces = confettiPieces.filter(p=> p.y < canvas.height + 40);
-				if(confettiPieces.length>0) requestAnimationFrame(confettiLoop); else confettiAnimating=false;
-			}
-
-			// Launch a small confetti at page load to brighten the moment
-			setTimeout(()=> launchConfetti(), 600);
-
-			/* Surprise dialog behavior and accessibility */
-			const surpriseBtn = document.getElementById('surpriseBtn');
-			const surpriseDialog = document.getElementById('surpriseDialog');
-			const dialogClose = surpriseDialog && surpriseDialog.querySelector('.dialog-close');
-			const sendKiss = document.getElementById('sendKiss');
-			const downloadCard = document.getElementById('downloadCard');
-			let lastFocused = null;
-
-			function openDialog(){
-				if(!surpriseDialog) return;
-				lastFocused = document.activeElement;
-				surpriseDialog.setAttribute('aria-hidden','false');
-				// focus panel for keyboard users
-				const panel = surpriseDialog.querySelector('.dialog-panel');
-				panel.setAttribute('tabindex','-1'); panel.focus();
-				document.body.style.overflow = 'hidden';
-				// trap focus
-				surpriseDialog.addEventListener('keydown', trapFocus);
-			}
-
-			function closeDialog(){
-				if(!surpriseDialog) return;
-				surpriseDialog.setAttribute('aria-hidden','true');
-				document.body.style.overflow = '';
-				surpriseDialog.removeEventListener('keydown', trapFocus);
-				// restore focus
-				if(lastFocused) lastFocused.focus();
-			}
-
-			surpriseBtn && surpriseBtn.addEventListener('click', openDialog);
-			dialogClose && dialogClose.addEventListener('click', closeDialog);
-
-			// Close dialog with Esc when open
-			document.addEventListener('keydown', (ev)=>{
-				if(ev.key === 'Escape' && surpriseDialog && surpriseDialog.getAttribute('aria-hidden') === 'false'){
-					closeDialog();
-				}
-			});
-
-			// Very small focus-trap implementation
-			function trapFocus(e){
-				if(e.key !== 'Tab') return;
-				const focusable = surpriseDialog.querySelectorAll('button, a[href], textarea, input, select, [tabindex]:not([tabindex="-1"])');
-				if(focusable.length === 0) return;
-				const first = focusable[0];
-				const last = focusable[focusable.length - 1];
-				if(e.shiftKey && document.activeElement === first){
-					e.preventDefault(); last.focus();
-				} else if(!e.shiftKey && document.activeElement === last){
-					e.preventDefault(); first.focus();
-				}
-			}
-
-			// small audio + extra confetti when sending a kiss
-			function playKissTone(){
-				try{
-					const ctx = new (window.AudioContext || window.webkitAudioContext)();
-					const o = ctx.createOscillator();
-					const g = ctx.createGain();
-					o.type = 'sine'; o.frequency.value = 880; g.gain.setValueAtTime(0.0001, ctx.currentTime);
-					g.gain.exponentialRampToValueAtTime(0.25, ctx.currentTime + 0.02);
-					g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.5);
-					o.connect(g); g.connect(ctx.destination); o.start(); setTimeout(()=> o.stop(), 520);
-				}catch(e){/* audio not available */}
-			}
-
-			sendKiss && sendKiss.addEventListener('click', ()=>{
-				// small visual feedback: temporary message and confetti
-				playKissTone();
-				launchConfetti();
-				const panel = surpriseDialog.querySelector('.dialog-panel');
-				const note = document.createElement('div');
-				note.textContent = '¡Beso enviado! 😘';
-				note.style.cssText = 'position:relative;margin-top:8px;padding:8px;border-radius:8px;background:#fff3f6;color:#8c1a45;font-weight:700;text-align:center;';
-				panel.appendChild(note);
-				setTimeout(()=> note.remove(), 1600);
-			});
-
-			// Download a small printable card (opens in new window for printing)
-			downloadCard && downloadCard.addEventListener('click', ()=>{
-				const html = `<!doctype html><html><head><meta charset="utf-8"><title>Tarjeta para Mamá</title><style>body{font-family:Arial,Helvetica,sans-serif;text-align:center;padding:40px;background:linear-gradient(180deg,#fff6f8,#fff);color:#7a2340} .card{border-radius:12px;padding:30px;border:4px solid #ffd1df;display:inline-block;background:white} h1{color:#e53b6d;margin:8px 0} p{margin:6px 0}</style></head><body><div class="card"><h1>¡Feliz Cumpleaños Mamá! 🎉</h1><p>Tu familia te quiere mucho.</p><p>Gracias por todo tu amor y ternura.</p></div></body></html>`;
-				const w = window.open('','_blank');
-				if(!w) return alert('Permite ventanas emergentes para descargar la tarjeta.');
-				w.document.open(); w.document.write(html); w.document.close();
-			});
-		</script>
-	</body>
+        // mostrar todo
+        const showAll = document.getElementById('catalog-show-all');
+        if(showAll) showAll.addEventListener('click', ()=>{ filterProducts('all'); catalogPanel.style.display='none'; });
+      }
+    </script>
+  </body>
 </html>
