@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Equipos - Copa Raúl Roja</title>
+  <link rel="stylesheet" href="styles.css">
+  <meta name="description" content="Equipos inscritos - Copa Raúl Roja">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <h1 class="logo">Copa <span class="highlight">Raúl Rojas</span></h1>
+      <nav class="nav">
+        <a href="index.html#home">Inicio</a>
+        <a href="tabla.html">Tabla</a>
+        <a href="calendar.html">Calendario</a>
+        <a href="equipos.html" aria-current="page">Equipos</a>
+        <a href="estadisticas.html">Estadísticas</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <section class="section card teams-card">
+        <div class="standings-header">
+          <div>
+            <h3>Equipos inscritos</h3>
+            <p class="muted">Lista de equipos registrados</p>
+          </div>
+          <div class="standings-actions">
+            <a href="index.html" class="btn ghost">Volver</a>
+          </div>
+        </div>
+
+        <ul id="teams-list" class="teams-list">
+          <li class="team-item" data-team-name="Gladiadores">
+            <div class="team-row">
+              <img class="team-thumb" src="https://sclrcoiisappnzbaxlzc.supabase.co/storage/v1/object/public/team-logos/teams/32314b3b-6ef8-4e0a-a5f2-0c9b08c75961/logo.jpg" alt="Gladiadores logo">
+              <div class="team-info">
+                <button class="team-name" type="button">Gladiadores</button>
+                <ul class="team-players small muted">
+                  <li>Kevin <span class="player-captain">C</span> <small style="color:var(--muted)">#8</small></li>
+                  <li>Adan <small style="color:var(--muted)">#3</small></li>
+                  <li>Haley <small style="color:var(--muted)">#5</small></li>
+                  <li>Alian <small style="color:var(--muted)">#1</small></li>
+                  <li>Juliyo <small style="color:var(--muted)">#7</small></li>
+                </ul>
+                <form class="team-add-form" data-team-name="Gladiadores" style="display:flex;gap:8px;margin-top:8px;align-items:center">
+                  <input name="playerName" placeholder="Nombre" style="flex:1;padding:.45rem;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text)">
+                  <input name="playerNumber" placeholder="#" style="width:72px;padding:.45rem;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text)">
+                  <label style="display:flex;align-items:center;gap:6px;color:var(--muted);font-size:.9rem"><input type="checkbox" name="captain"> C</label>
+                  <button class="btn" type="submit">Añadir</button>
+                </form>
+              </div>
+            </div>
+          </li>
+          <li class="team-item" data-team-name="FC 9no">
+            <div class="team-row">
+              <img class="team-thumb" src="https://sclrcoiisappnzbaxlzc.supabase.co/storage/v1/object/public/team-logos/teams/d00bbe10-d6d8-470a-8ef3-2a4ab27c58c3/logo.jpg" alt="FC 9no logo">
+              <div class="team-info">
+                <button class="team-name" type="button">FC 9no</button>
+                <ul class="team-players small muted"><li class="muted">Sin jugadores registrados</li></ul>
+                <form class="team-add-form" data-team-name="FC 9no" style="display:flex;gap:8px;margin-top:8px;align-items:center">
+                  <input name="playerName" placeholder="Nombre" style="flex:1;padding:.45rem;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text)">
+                  <input name="playerNumber" placeholder="#" style="width:72px;padding:.45rem;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text)">
+                  <label style="display:flex;align-items:center;gap:6px;color:var(--muted);font-size:.9rem"><input type="checkbox" name="captain"> C</label>
+                  <button class="btn" type="submit">Añadir</button>
+                </form>
+              </div>
+            </div>
+          </li>
+
+          <li class="team-item" data-team-name="Los Descalsos">
+            <div class="team-row">
+              <img class="team-thumb" src="https://sclrcoiisappnzbaxlzc.supabase.co/storage/v1/object/public/team-logos/teams/0b203679-a1c9-49b1-a316-e2a588495d6f/logo.jpg?v=1758390280487" alt="Los Descalsos logo">
+              <div class="team-info">
+                <button class="team-name" type="button">Los Descalsos</button>
+                <ul class="team-players small muted"><li class="muted">Sin jugadores registrados</li></ul>
+                <form class="team-add-form" data-team-name="Los Descalsos" style="display:flex;gap:8px;margin-top:8px;align-items:center">
+                  <input name="playerName" placeholder="Nombre" style="flex:1;padding:.45rem;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text)">
+                  <input name="playerNumber" placeholder="#" style="width:72px;padding:.45rem;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text)">
+                  <label style="display:flex;align-items:center;gap:6px;color:var(--muted);font-size:.9rem"><input type="checkbox" name="captain"> C</label>
+                  <button class="btn" type="submit">Añadir</button>
+                </form>
+              </div>
+            </div>
+          </li>
+
+          <li class="team-item" data-team-name="Gamboleros">
+            <div class="team-row">
+              <img class="team-thumb" src="https://sclrcoiisappnzbaxlzc.supabase.co/storage/v1/object/public/team-logos/teams/afe8cc36-d1b7-4052-ad89-99443c3e52f0/logo.jpg?v=1758388008060" alt="Gamboleros logo">
+              <div class="team-info">
+                <button class="team-name" type="button">Gamboleros</button>
+                <ul class="team-players small muted"><li class="muted">Sin jugadores registrados</li></ul>
+                <form class="team-add-form" data-team-name="Gamboleros" style="display:flex;gap:8px;margin-top:8px;align-items:center">
+                  <input name="playerName" placeholder="Nombre" style="flex:1;padding:.45rem;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text)">
+                  <input name="playerNumber" placeholder="#" style="width:72px;padding:.45rem;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text)">
+                  <label style="display:flex;align-items:center;gap:6px;color:var(--muted);font-size:.9rem"><input type="checkbox" name="captain"> C</label>
+                  <button class="btn" type="submit">Añadir</button>
+                </form>
+              </div>
+            </div>
+          </li>
+
+          <li class="team-item" data-team-name="Scorpions">
+            <div class="team-row">
+              <img class="team-thumb" src="https://sclrcoiisappnzbaxlzc.supabase.co/storage/v1/object/public/team-logos/teams/a9e7ac21-550a-4350-82ae-677979f69a81/logo.jpg?v=1758735227385" alt="Scorpions logo">
+              <div class="team-info">
+                <button class="team-name" type="button">Scorpions</button>
+                <ul class="team-players small muted"><li class="muted">Sin jugadores registrados</li></ul>
+                <form class="team-add-form" data-team-name="Scorpions" style="display:flex;gap:8px;margin-top:8px;align-items:center">
+                  <input name="playerName" placeholder="Nombre" style="flex:1;padding:.45rem;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text)">
+                  <input name="playerNumber" placeholder="#" style="width:72px;padding:.45rem;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text)">
+                  <label style="display:flex;align-items:center;gap:6px;color:var(--muted);font-size:.9rem"><input type="checkbox" name="captain"> C</label>
+                  <button class="btn" type="submit">Añadir</button>
+                </form>
+              </div>
+            </div>
+          </li>
+
+          <li class="team-item" data-team-name="Klan">
+            <div class="team-row">
+              <img class="team-thumb" src="https://sclrcoiisappnzbaxlzc.supabase.co/storage/v1/object/public/team-logos/teams/37af335f-ef37-4d61-8221-801e13d64713/logo.jpg?v=1758392886644" alt="Klan logo">
+              <div class="team-info">
+                <button class="team-name" type="button">Klan</button>
+                <ul class="team-players small muted"><li class="muted">Sin jugadores registrados</li></ul>
+                <form class="team-add-form" data-team-name="Klan" style="display:flex;gap:8px;margin-top:8px;align-items:center">
+                  <input name="playerName" placeholder="Nombre" style="flex:1;padding:.45rem;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text)">
+                  <input name="playerNumber" placeholder="#" style="width:72px;padding:.45rem;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text)">
+                  <label style="display:flex;align-items:center;gap:6px;color:var(--muted);font-size:.9rem"><input type="checkbox" name="captain"> C</label>
+                  <button class="btn" type="submit">Añadir</button>
+                </form>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© Copa Raúl Roja — Todos los derechos reservados</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

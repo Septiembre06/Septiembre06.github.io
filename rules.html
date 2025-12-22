@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Reglas - Copa Raúl Roja</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body { background:#071223; color:#e6eef8; }
+    .container { max-width:980px; margin:28px auto; padding:0 16px; }
+    .card { background:#0b1520; padding:18px; border-radius:8px; }
+    .standings-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px }
+    .muted { color:#9fb3c8; }
+    .accordion .item { border-top:1px solid rgba(255,255,255,0.03); }
+    .item-header { width:100%; background:transparent; border:0; color:#cfe7f5; padding:12px 8px; text-align:left; display:flex; align-items:center; justify-content:space-between; }
+    .item-body { padding:0 8px 12px 8px; color:#cfe7f5 }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <h1 class="logo">Copa <span class="highlight">Raúl Rojas</span></h1>
+      <nav class="nav">
+        <a href="index.html#home">Inicio</a>
+        <a href="tabla.html">Tabla</a>
+        <a href="calendar.html">Calendario</a>
+        <a href="equipos.html">Equipos</a>
+        <a href="estadisticas.html">Estadísticas</a>
+        <a href="rules.html" aria-current="page">Reglas</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <section class="card">
+        <div class="standings-header">
+          <div>
+            <h3>Reglas del Torneo</h3>
+            <p class="muted">Información importante sobre las reglas y normas del torneo</p>
+          </div>
+          <div>
+            <a href="index.html#home" class="btn ghost">Volver</a>
+          </div>
+        </div>
+
+        <div class="accordion" id="rules-accordion">
+          <div class="item">
+            <button class="item-header" type="button">
+              <span>Resumen del Torneo</span>
+              <span class="chev">▾</span>
+            </button>
+            <div class="item-body">
+              <p>Este torneo de futsal se rige por las reglas estándar de fútbol sala.</p>
+              <ul class="muted">
+                <li>Formato: Liga con posibilidad de fase eliminatoria.</li>
+                <li>Duración: 25 minutos cronometrados (2x15).</li>
+                <li>Equipos: 4 jugadores en cancha (máximo 6 inscritos por equipo).</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="item">
+            <button class="item-header" type="button">
+              <span>Campo de Juego</span>
+              <span class="chev">▾</span>
+            </button>
+            <div class="item-body muted">
+              <p>Cancha de la Raul.</p>
+              <p>Una Porteria es de palos y la otra es el muro::Cada porterias son 10 pasos de David q es el mas grandote.</p>
+            </div>
+          </div>
+
+          <div class="item">
+            <button class="item-header" type="button">
+              <span>Jugadores y Equipación</span>
+              <span class="chev">▾</span>
+            </button>
+            <div class="item-body muted">
+              <ul>
+                <li>Cada equipo: 3 jugadores en cancha (1 guardameta).</li>
+                <li>Sustituciones: ilimitadas y en cualquier momento.</li>
+                <li>Mínimo: 4 jugadores para iniciar un partido.</li>
+                <li>Máximo de inscritos: 6 jugadores por equipo.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="item">
+            <button class="item-header" type="button">
+              <span>Duración del Partido</span>
+              <span class="chev">▾</span>
+            </button>
+            <div class="item-body muted">
+              <p>Tiempo total: 30 minutos cronometrados, divididos en dos tiempos de 15 minutos. Descanso de 3 minutos entre tiempos.</p>
+            </div>
+          </div>
+
+          <div class="item">
+            <button class="item-header" type="button">
+              <span>Faltas y Sanciones</span>
+              <span class="chev">▾</span>
+            </button>
+            <div class="item-body muted">
+              <ul>
+                <li>A partir de la 5ª falta: penales desde 12 metros.</li>
+                <li>Tarjeta amarilla: conducta antideportiva.</li>
+                <li>Tarjeta roja: juego brusco o conducta violenta.</li>
+                <li>Expulsión temporal: 2 minutos o hasta recibir gol.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="item">
+            <button class="item-header" type="button">
+              <span>Conducta y Disciplina</span>
+              <span class="chev">▾</span>
+            </button>
+            <div class="item-body muted">
+              <ul>
+                <li>Puntualidad: 10 minutos de tolerancia para el inicio.</li>
+                <li>Sólo los capitanes pueden reclamar a árbitros.</li>
+                <li>Respeto obligatorio a árbitros y rivales.</li>
+                <li>Sanciones por acumulación de tarjetas.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© Copa Raúl Roja — Todos los derechos reservados</p>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', ()=>{
+      document.querySelectorAll('.accordion .item').forEach(item=>{
+        const header = item.querySelector('.item-header');
+        if(!header) return;
+        header.addEventListener('click', ()=>{
+          const open = item.classList.contains('open');
+          item.parentElement.querySelectorAll('.item').forEach(i=>i.classList.remove('open'));
+          if(!open) item.classList.add('open');
+        });
+      });
+    });
+  </script>
+</body>
+</html>

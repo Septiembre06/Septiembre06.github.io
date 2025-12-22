@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Estadísticas - Copa Raúl Roja</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body{background:#071223;color:#e6eef8}
+    .container{max-width:980px;margin:28px auto;padding:0 16px}
+    .card{background:#0b1520;padding:18px;border-radius:8px}
+    .stats-tabs{display:flex;gap:8px;margin-bottom:12px}
+    .stats-tabs button{background:transparent;border:1px solid rgba(255,255,255,0.05);color:#9fb3c8;padding:8px 12px;border-radius:6px;cursor:pointer}
+    .stats-tabs button.active{background:#072433;color:#fff;border-color:#164b5a}
+    .stats-panel{background:transparent;padding-top:8px}
+    .goleadores-list{list-style:none;padding:0;margin:0}
+    .goleadores-list li{display:flex;align-items:center;gap:12px;padding:10px 8px;border-bottom:1px solid rgba(255,255,255,0.03)}
+    .player-avatar{width:40px;height:40px;border-radius:50%;overflow:hidden}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <h1 class="logo">Copa <span class="highlight">Raúl Rojas</span></h1>
+      <nav class="nav">
+        <a href="index.html#home">Inicio</a>
+        <a href="tabla.html">Tabla</a>
+        <a href="calendar.html">Calendario</a>
+        <a href="equipos.html">Equipos</a>
+        <a href="estadisticas.html" aria-current="page">Estadísticas</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <section class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <div>
+            <h3>Estadísticas</h3>
+            <p class="muted">Goleadores, mejores porteros y más</p>
+          </div>
+          <a href="index.html" class="btn ghost">Volver</a>
+        </div>
+
+        <div class="stats-tabs" role="tablist">
+          <button id="tab-goleadores" class="active" role="tab" aria-selected="true">Goleadores</button>
+          <button id="tab-porteros" role="tab" aria-selected="false">Mejor portero</button>
+          <button id="tab-asistencias" role="tab" aria-selected="false">Máximos asistentes</button>
+        </div>
+
+        <div id="panels" class="stats-panel">
+          <div id="panel-goleadores">
+            <ul id="list-goleadores" class="goleadores-list"></ul>
+          </div>
+
+          <div id="panel-porteros" style="display:none">
+            <ul id="list-porteros" class="goleadores-list"></ul>
+          </div>
+
+          <div id="panel-asistencias" style="display:none">
+            <ul id="list-asistencias" class="goleadores-list"></ul>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© Copa Raúl Roja — Todos los derechos reservados</p>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', ()=>{
+      const tabGol = document.getElementById('tab-goleadores');
+      const tabPor = document.getElementById('tab-porteros');
+      const tabAs = document.getElementById('tab-asistencias');
+      const panelGol = document.getElementById('panel-goleadores');
+      const panelPor = document.getElementById('panel-porteros');
+      const panelAs = document.getElementById('panel-asistencias');
+
+      function showPanel(activeTab, panelsMap){
+        [tabGol, tabPor, tabAs].forEach(t=>t.classList.remove('active'));
+        activeTab.classList.add('active');
+        tabGol.setAttribute('aria-selected', activeTab===tabGol ? 'true' : 'false');
+        tabPor.setAttribute('aria-selected', activeTab===tabPor ? 'true' : 'false');
+        tabAs.setAttribute('aria-selected', activeTab===tabAs ? 'true' : 'false');
+        panelGol.style.display = (activeTab===tabGol) ? 'block' : 'none';
+        panelPor.style.display = (activeTab===tabPor) ? 'block' : 'none';
+        panelAs.style.display = (activeTab===tabAs) ? 'block' : 'none';
+      }
+
+      tabGol.addEventListener('click', ()=> showPanel(tabGol));
+      tabPor.addEventListener('click', ()=> showPanel(tabPor));
+      tabAs.addEventListener('click', ()=> showPanel(tabAs));
+      // --- statistics computation ---
+      function parsePlayerFromEvent(text){
+        if(!text) return null;
+        // Try patterns: "Gol - Name (12')", "Gol: Name", "Gol Name"
+        const m = text.match(/\b(?:Gol)\b\s*[:\-]?\s*(.+?)(?:\s*\(|$)/i);
+        if(m) return m[1].trim();
+        const m2 = text.match(/\b(?:Asist(?:encia|a)|Asistencia|ASIST)\b\s*[:\-]?\s*(.+?)(?:\s*\(|$)/i);
+        if(m2) return m2[1].trim();
+        const m3 = text.match(/\b(?:Atajad(?:a|as)|Atajada|Ataj)\b\s*[:\-]?\s*(.+?)(?:\s*\(|$)/i);
+        if(m3) return m3[1].trim();
+        // fallback: if contains a hyphen, take part after hyphen
+        const hy = text.split('-'); if(hy.length>1) return hy.slice(1).join('-').trim();
+        return text.trim();
+      }
+
+      function computeStats(){
+        const goals = {}; const assists = {}; const saves = {};
+        // iterate localStorage matches
+        for(let i=0;i<localStorage.length;i++){
+          const key = localStorage.key(i);
+          if(!key || !key.startsWith('match::')) continue;
+          try{
+            const raw = localStorage.getItem(key); if(!raw) continue;
+            const m = JSON.parse(raw);
+            const teamLeft = m.team1 || '';
+            const teamRight = m.team2 || '';
+            const leftEvents = m.eventsLeft || [];
+            const rightEvents = m.eventsRight || [];
+            leftEvents.forEach(ev=>{
+              if(!ev) return;
+              const t = ev.trim();
+              // goal
+              if(/^\s*gol\b/i.test(t)){
+                const player = parsePlayerFromEvent(t) || '—';
+                goals[player] = (goals[player]||0) + 1;
+              }
+              // asist
+              if(/\b(asist|asistencia)\b/i.test(t)){
+                const player = parsePlayerFromEvent(t) || '—';
+                assists[player] = (assists[player]||0) + 1;
+              }
+              // atajada
+              if(/\b(atajad)\b/i.test(t)){
+                const player = parsePlayerFromEvent(t) || '—';
+                saves[player] = (saves[player]||0) + 1;
+              }
+            });
+            rightEvents.forEach(ev=>{
+              if(!ev) return;
+              const t = ev.trim();
+              if(/^\s*gol\b/i.test(t)){
+                const player = parsePlayerFromEvent(t) || '—';
+                goals[player] = (goals[player]||0) + 1;
+              }
+              if(/\b(asist|asistencia)\b/i.test(t)){
+                const player = parsePlayerFromEvent(t) || '—';
+                assists[player] = (assists[player]||0) + 1;
+              }
+              if(/\b(atajad)\b/i.test(t)){
+                const player = parsePlayerFromEvent(t) || '—';
+                saves[player] = (saves[player]||0) + 1;
+              }
+            });
+          }catch(e){console.error('invalid match entry', e)}
+        }
+        return {goals,assists,saves};
+      }
+
+      function renderTop(listEl, map, label){
+        const ul = document.getElementById(listEl);
+        ul.innerHTML = '';
+        const items = Object.keys(map).map(k=>({name:k,count:map[k]})).sort((a,b)=>b.count - a.count || a.name.localeCompare(b.name));
+        if(items.length===0){ ul.innerHTML = '<li class="muted">Sin datos</li>'; return; }
+        items.slice(0,20).forEach(it=>{
+          const li = document.createElement('li'); li.style.display='flex'; li.style.alignItems='center'; li.style.gap='12px'; li.style.padding='10px 8px';
+          li.innerHTML = `<div class="player-avatar"><img src="https://via.placeholder.com/40" alt="Jugador"></div><div><strong>${it.name}</strong><div class="muted">${it.count} ${label}</div></div>`;
+          ul.appendChild(li);
+        });
+      }
+
+      function refreshStats(){
+        const s = computeStats();
+        renderTop('list-goleadores', s.goals, 'goles');
+        renderTop('list-asistencias', s.assists, 'asistencias');
+        renderTop('list-porteros', s.saves, 'atajadas');
+      }
+
+      // initial render
+      refreshStats();
+      // update on storage and custom events
+      window.addEventListener('storage', (e)=>{ if(e.key && e.key.startsWith('match::')) refreshStats(); });
+      window.addEventListener('matches-updated', refreshStats);
+    });
+  </script>
+</body>
+</html>

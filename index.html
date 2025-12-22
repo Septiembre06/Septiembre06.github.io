@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Copa Raúl Roja</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <meta name="description" content="Página oficial de la Copa Raúl Roja - torneo de fútbol amateur.">
 </head>
@@ -88,7 +89,51 @@
             <div id="tabsContent" class="tabs-content"></div>
           </div>
 
-          <!-- mini-cards removidas según petición del usuario -->
+          <div class="cards-row">
+            <div class="mini-card card">
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <div style="width:56px;height:56px;border-radius:12px;background:linear-gradient(180deg,#072c33,#05303a);display:flex;align-items:center;justify-content:center;font-size:24px">🏆</div>
+                <div>
+                  <h4 style="margin:.2rem 0 .25rem">Tabla general</h4>
+                  <p class="muted" style="margin:0">Revisa la posición de cada equipo.</p>
+                </div>
+                <div style="margin-top:6px"><a href="tabla.html" class="link-small">Ver sección ›</a></div>
+              </div>
+            </div>
+
+            <div class="mini-card card">
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <div style="width:56px;height:56px;border-radius:12px;background:linear-gradient(180deg,#0b2a3a,#052733);display:flex;align-items:center;justify-content:center;font-size:24px">📅</div>
+                <div>
+                  <h4 style="margin:.2rem 0 .25rem">Calendario</h4>
+                  <p class="muted" style="margin:0">Consulta las fechas de los partidos.</p>
+                </div>
+                <div style="margin-top:6px"><a href="calendar.html" class="link-small">Ver sección ›</a></div>
+              </div>
+            </div>
+
+            <div class="mini-card card">
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <div style="width:56px;height:56px;border-radius:12px;background:linear-gradient(180deg,#2b1f3a,#22162d);display:flex;align-items:center;justify-content:center;font-size:24px">⚽</div>
+                <div>
+                  <h4 style="margin:.2rem 0 .25rem">Goleadores</h4>
+                  <p class="muted" style="margin:0">Ranking de anotadores del torneo.</p>
+                </div>
+                <div style="margin-top:6px"><a href="estadisticas.html#tab-goleadores" class="link-small">Ver sección ›</a></div>
+              </div>
+            </div>
+
+            <div class="mini-card card">
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <div style="width:56px;height:56px;border-radius:12px;background:linear-gradient(180deg,#2a1220,#321222);display:flex;align-items:center;justify-content:center;font-size:24px">📊</div>
+                <div>
+                  <h4 style="margin:.2rem 0 .25rem">Estadísticas</h4>
+                  <p class="muted" style="margin:0">Estadísticas detalladas de partidos.</p>
+                </div>
+                <div style="margin-top:6px"><a href="estadisticas.html" class="link-small">Ver sección ›</a></div>
+              </div>
+            </div>
+          </div>
 
           <!-- Sección Jugador de la Jornada (inicialmente oculta) -->
           <section id="player" class="section card player-card" style="display:none;">
@@ -181,6 +226,55 @@
                       <li>Alian #1</li>
                       <li>Juliyo #7</li>
                     </ul>
+                  </div>
+                </div>
+              </li>
+              <li class="team-item" data-team-name="FC 9no">
+                <div class="team-row">
+                  <img class="team-thumb" src="https://sclrcoiisappnzbaxlzc.supabase.co/storage/v1/object/public/team-logos/teams/d00bbe10-d6d8-470a-8ef3-2a4ab27c58c3/logo.jpg" alt="FC 9no logo">
+                  <div class="team-info">
+                    <button class="team-name" type="button">FC 9no</button>
+                    <div class="muted">Sin jugadores registrados</div>
+                  </div>
+                </div>
+              </li>
+
+              <li class="team-item" data-team-name="Los Descalsos">
+                <div class="team-row">
+                  <img class="team-thumb" src="https://sclrcoiisappnzbaxlzc.supabase.co/storage/v1/object/public/team-logos/teams/0b203679-a1c9-49b1-a316-e2a588495d6f/logo.jpg?v=1758390280487" alt="Los Descalsos logo">
+                  <div class="team-info">
+                    <button class="team-name" type="button">Los Descalsos</button>
+                    <div class="muted">Sin jugadores registrados</div>
+                  </div>
+                </div>
+              </li>
+
+              <li class="team-item" data-team-name="Gamboleros">
+                <div class="team-row">
+                  <img class="team-thumb" src="https://sclrcoiisappnzbaxlzc.supabase.co/storage/v1/object/public/team-logos/teams/afe8cc36-d1b7-4052-ad89-99443c3e52f0/logo.jpg?v=1758388008060" alt="Gamboleros logo">
+                  <div class="team-info">
+                    <button class="team-name" type="button">Gamboleros</button>
+                    <div class="muted">Sin jugadores registrados</div>
+                  </div>
+                </div>
+              </li>
+
+              <li class="team-item" data-team-name="Scorpions">
+                <div class="team-row">
+                  <img class="team-thumb" src="https://sclrcoiisappnzbaxlzc.supabase.co/storage/v1/object/public/team-logos/teams/a9e7ac21-550a-4350-82ae-677979f69a81/logo.jpg?v=1758735227385" alt="Scorpions logo">
+                  <div class="team-info">
+                    <button class="team-name" type="button">Scorpions</button>
+                    <div class="muted">Sin jugadores registrados</div>
+                  </div>
+                </div>
+              </li>
+
+              <li class="team-item" data-team-name="Klan">
+                <div class="team-row">
+                  <img class="team-thumb" src="https://sclrcoiisappnzbaxlzc.supabase.co/storage/v1/object/public/team-logos/teams/37af335f-ef37-4d61-8221-801e13d64713/logo.jpg?v=1758392886644" alt="Klan logo">
+                  <div class="team-info">
+                    <button class="team-name" type="button">Klan</button>
+                    <div class="muted">Sin jugadores registrados</div>
                   </div>
                 </div>
               </li>
