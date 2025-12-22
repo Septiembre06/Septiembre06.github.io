@@ -8,36 +8,35 @@
   <meta name="description" content="Página oficial de la Copa Raúl Roja - torneo de fútbol amateur.">
 </head>
 <body>
-  <header class="site-header">
+  <header class="site-header" id="home">
     <div class="container header-inner">
       <h1 class="logo">Copa <span class="highlight">Raúl Rojas</span></h1>
       <nav class="nav" id="nav">
-        <a href="#equipos">Equipos</a>
-        <a href="#fixture">Fixture</a>
-        <a href="#reglamento">Reglamento</a>
-        <a href="#inscripcion" class="cta">Inscribirse</a>
+        <a href="index.html#home">Inicio</a>
+        <a href="tabla.html">Tabla</a>
+        <a href="calendar.html">Calendario</a>
+        <a href="estadisticas.html">Estadísticas</a>
+        <a href="#goleadores">Goleadores</a>
+        <a href="equipos.html">Equipos</a>
+        <a href="rules.html">Reglas</a>
       </nav>
       <button id="menuBtn" class="menu-btn" aria-label="Abrir menú">☰</button>
+      <!-- Top logo badges under nav -->
+      <div class="top-logos">
+        <div class="logo-badges" aria-hidden="true">
+          <img id="team-badge-0" class="badge-img" src="https://sclrcoiisappnzbaxlzc.supabase.co/storage/v1/object/public/team-logos/teams/d00bbe10-d6d8-470a-8ef3-2a4ab27c58c3/logo.jpg" alt="Logo equipo 1" tabindex="0" role="button" aria-label="Equipo 1" data-team-name="Team 1" data-team-logo="https://sclrcoiisappnzbaxlzc.supabase.co/storage/v1/object/public/team-logos/teams/d00bbe10-d6d8-470a-8ef3-2a4ab27c58c3/logo.jpg">
+          <img id="team-badge-1" class="badge-img" src="https://sclrcoiisappnzbaxlzc.supabase.co/storage/v1/object/public/team-logos/teams/32314b3b-6ef8-4e0a-a5f2-0c9b08c75961/logo.jpg" alt="Gladiadores" tabindex="0" role="button" aria-label="Gladiadores" data-team-name="Gladiadores" data-team-logo="https://sclrcoiisappnzbaxlzc.supabase.co/storage/v1/object/public/team-logos/teams/32314b3b-6ef8-4e0a-a5f2-0c9b08c75961/logo.jpg">
+          <img class="badge-img" src="https://sclrcoiisappnzbaxlzc.supabase.co/storage/v1/object/public/team-logos/teams/0b203679-a1c9-49b1-a316-e2a588495d6f/logo.jpg?v=1758390280487" alt="Logo equipo 3">
+          <img class="badge-img" src="https://sclrcoiisappnzbaxlzc.supabase.co/storage/v1/object/public/team-logos/teams/afe8cc36-d1b7-4052-ad89-99443c3e52f0/logo.jpg?v=1758388008060" alt="Logo equipo 4">
+          <img class="badge-img" src="https://sclrcoiisappnzbaxlzc.supabase.co/storage/v1/object/public/team-logos/teams/a9e7ac21-550a-4350-82ae-677979f69a81/logo.jpg?v=1758735227385" alt="Logo equipo 5">
+          <img class="badge-img" src="https://sclrcoiisappnzbaxlzc.supabase.co/storage/v1/object/public/team-logos/teams/37af335f-ef37-4d61-8221-801e13d64713/logo.jpg?v=1758392886644" alt="Logo equipo 6">
+        </div>
+      </div>
     </div>
   </header>
 
   <main>
     <div class="container dashboard">
-      <div class="top-logos">
-        <!-- fila de logos pequeños como en la imagen -->
-        <div class="logo-badges" aria-hidden="true">
-          <!-- Primer badge: clicable, abrirá panel de equipo (imagen ocultada por petición) -->
-          <img id="team-badge-0" class="badge-img" src="" alt="Logo FC 9no" tabindex="0" role="button" aria-label="Abrir detalles FC 9no" data-team-name="FC 9no" data-team-logo="https://www.shutterstock.com/shutterstock/photos/2616890271/display_1500/stock-vector-vector-illustration-of-a-football-club-logo-with-a-soccer-ball-and-a-circular-badge-design-perfect-2616890271.jpg">
-          <!-- Segundo badge: Gladiadores (imagen visible) -->
-          <img id="team-badge-1" class="badge-img" src="https://sclrcoiisappnzbaxlzc.supabase.co/storage/v1/object/public/team-logos/teams/32314b3b-6ef8-4e0a-a5f2-0c9b08c75961/logo.jpg" alt="Logo Gladiadores" tabindex="0" role="button" aria-label="Abrir detalles Gladiadores" data-team-name="Gladiadores" data-team-logo="https://sclrcoiisappnzbaxlzc.supabase.co/storage/v1/object/public/team-logos/teams/32314b3b-6ef8-4e0a-a5f2-0c9b08c75961/logo.jpg">
-          <img class="badge-img" src="" alt="https://sclrcoiisappnzbaxlzc.supabase.co/storage/v1/object/public/team-logos/teams/0b203679-a1c9-49b1-a316-e2a588495d6f/logo.jpg?v=1758390280487">
-          <img class="badge-img" src="" alt="Logo torneo">
-          <img class="badge-img" src="" alt="Logo torneo">
-          <img class="badge-img" src="" alt="Logo torneo">
-        </div>
-        <!-- último circulito eliminado según petición -->
-      </div>
-      </div>
 
       <div class="columns">
         <section class="main-column">
@@ -57,7 +56,7 @@
                 <button id="showTableBtn" class="btn primary" type="button">Ver tabla</button>
                 <button id="showCalendarBtn" class="btn primary" type="button">Ver calendario</button>
                 <button id="showTeamsBtn" class="btn primary" type="button">Equipos</button>
-                <a href="#" class="btn ghost">Estadísticas</a>
+                <a href="estadisticas.html" class="btn ghost">Estadísticas</a>
               </div>
             </div>
 
@@ -83,20 +82,34 @@
             </div>
           </div>
 
-          <div class="cards-row">
-            <div class="mini-card card">Tabla general
-              <p class="muted">Revisa la posición de cada equipo.</p>
-            </div>
-            <div class="mini-card card">Calendario
-              <p class="muted">Consulta las fechas de los partidos.</p>
-            </div>
-            <div class="mini-card card">Goleadores
-              <p class="muted">Ranking de anotadores del torneo.</p>
-            </div>
-            <div class="mini-card card">Ideal 5
-              <p class="muted">Selección de quinteto destacado.</p>
-            </div>
+          <!-- Contenedor de pestañas: las secciones se abren aquí como pestañas -->
+          <div id="tabsWrapper" class="tabs-wrapper" style="display:none;">
+            <div id="tabsBar" class="tabs-bar" role="tablist" aria-label="Pestañas"></div>
+            <div id="tabsContent" class="tabs-content"></div>
           </div>
+
+          <!-- mini-cards removidas según petición del usuario -->
+
+          <!-- Sección Jugador de la Jornada (inicialmente oculta) -->
+          <section id="player" class="section card player-card" style="display:none;">
+            <div class="standings-header">
+              <div>
+                <h3>Jugador de la jornada</h3>
+                <p class="muted">Elige al jugador destacado de la última fecha.</p>
+              </div>
+              <div class="standings-actions">
+                <button id="closePlayerBtn" class="btn ghost" type="button">Cerrar</button>
+              </div>
+            </div>
+            <div class="player-body">
+              <div class="player-card-inner">
+                <div class="player-avatar-large"></div>
+                <h4 id="playerName">—</h4>
+                <p id="playerTeam" class="muted">Equipo: —</p>
+                <p id="playerDesc" class="muted">Aún no hay selección.</p>
+              </div>
+            </div>
+          </section>
 
           <!-- Sección de tabla de posiciones (inicialmente oculta) -->
           <section id="fixture" class="section card standings-card" style="display:none;">
@@ -118,21 +131,18 @@
                     <th>Equipo</th>
                     <th>Pts</th>
                     <th>PJ</th>
-                    <th>G</th>
-                    <th>E</th>
-                    <th>P</th>
                     <th>GF</th>
                     <th>GC</th>
-                    <th>DG</th>
                   </tr>
                 </thead>
                 <tbody id="standings-body">
-                  <!-- Filas vacías (solo posición) -->
-                  <tr><td class="pos">1</td><td class="team"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                  <tr><td class="pos">2</td><td class="team"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                  <tr><td class="pos">3</td><td class="team"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                  <tr><td class="pos">4</td><td class="team"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                  <tr><td class="pos">5</td><td class="team"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                  <!-- Filas: solo 6 columnas ahora -->
+                  <tr><td class="pos">1</td><td class="team">Gladiadores</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                  <tr><td class="pos">2</td><td class="team">FC 9no</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                  <tr><td class="pos">3</td><td class="team">Los Descalsos</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                  <tr><td class="pos">4</td><td class="team">Gamboleros</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                  <tr><td class="pos">5</td><td class="team">Scorpions</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                  <tr><td class="pos">6</td><td class="team">Klan</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
                   <tr><td class="pos">6</td><td class="team"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
                   <tr><td class="pos">7</td><td class="team"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
                   <tr><td class="pos">8</td><td class="team"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
@@ -143,64 +153,9 @@
             </div>
           </section>
 
-          <!-- Sección de calendario (inicialmente oculta) -->
-          <section id="calendar" class="section card calendar-card" style="display:none;">
-            <div class="standings-header">
-              <div>
-                <h3>Calendario de Partidos</h3>
-                <p class="muted">Partidos programados para el torneo</p>
-              </div>
-              <div class="standings-actions">
-                <button id="closeCalendarBtn" class="btn ghost" type="button">Cerrar</button>
-              </div>
-            </div>
+          <!-- Calendario eliminado para mostrar sólo Reglas del Torneo -->
 
-            <div class="accordion" id="calendar-accordion">
-              <!-- Mini-cards y formulario eliminados por petición del usuario -->
-                  <span class="chev">▾</span>
-                </button>
-                <div class="item-body">
-                  <p class="muted">No hay partidos asignados aún.</p>
-                </div>
-              </div>
-
-              <div class="item">
-                <button class="item-header" type="button">
-                  <span class="dot"></span>
-                  <span class="title">Cuarta jornada</span>
-                  <span class="meta">3 partidos</span>
-                  <span class="chev">▾</span>
-                </button>
-                <div class="item-body">
-                  <p class="muted">No hay partidos asignados aún.</p>
-                </div>
-              </div>
-
-              <div class="item">
-                <button class="item-header" type="button">
-                  <span class="dot"></span>
-                  <span class="title">Quinta jornada</span>
-                  <span class="meta">3 partidos</span>
-                  <span class="chev">▾</span>
-                </button>
-                <div class="item-body">
-                  <p class="muted">No hay partidos asignados aún.</p>
-                </div>
-              </div>
-
-              <div class="item">
-                <button class="item-header" type="button">
-                  <span class="dot"></span>
-                  <span class="title">Sexta jornada</span>
-                  <span class="meta">3 partidos</span>
-                  <span class="chev">▾</span>
-                </button>
-                <div class="item-body">
-                  <p class="muted">No hay partidos asignados aún.</p>
-                </div>
-              </div>
-            </div>
-          </section>
+          <!-- Reglas movidas a rules.html -->
 
           <!-- Sección de equipos (inicialmente oculta) -->
           <section id="teams" class="section card teams-card" style="display:none;">
@@ -214,24 +169,25 @@
               </div>
             </div>
             <ul id="teams-list" class="teams-list">
-              <li id="teams-empty" class="muted">No hay equipos inscritos aún.</li>
+              <li class="team-item" data-team-name="Gladiadores">
+                <div class="team-row">
+                  <img class="team-thumb" src="https://sclrcoiisappnzbaxlzc.supabase.co/storage/v1/object/public/team-logos/teams/32314b3b-6ef8-4e0a-a5f2-0c9b08c75961/logo.jpg" alt="Gladiadores logo">
+                  <div class="team-info">
+                    <button class="team-name" type="button">Gladiadores</button>
+                    <ul class="team-players small muted">
+                      <li>Kevin (C) #8</li>
+                      <li>Adan #3</li>
+                      <li>Haley #5</li>
+                      <li>Alian #1</li>
+                      <li>Juliyo #7</li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
             </ul>
           </section>
 
-          <section id="inscripcion" class="section form-section card">
-            <h3>Formulario de inscripción</h3>
-            <form id="regForm" class="reg-form" novalidate>
-              <label>Nombre del equipo <input type="text" id="teamName" required></label>
-              <label>Nombre del capitán <input type="text" id="captainName" required></label>
-              <label>Teléfono <input type="tel" id="phone"></label>
-              <label>Email <input type="email" id="email"></label>
-              <label>Nº de jugadores <input type="number" id="playersCount" min="5" max="12" value="7"></label>
-              <div class="form-actions">
-                <button type="submit" class="btn primary">Enviar inscripción</button>
-                <p id="form-msg" class="form-msg" aria-live="polite"></p>
-              </div>
-            </form>
-          </section>
+          <!-- Formulario de inscripción eliminado por petición del usuario -->
         </section>
 
         <!-- sidebar eliminado según solicitud del usuario -->
