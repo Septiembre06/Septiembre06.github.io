@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revelación de Roles - Impostor Caney</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕵️</text></svg>">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+        #reveal-container {
+            max-width: 600px;
+            background-color: #2a2a2a;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+        h1 {
+            color: #ff4444;
+            text-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        button:hover {
+            background-color: #cc3333;
+        }
+        .hidden {
+            display: none;
+        }
+        /* (Loading overlay removed) */
+    </style>
+</head>
+<body>
+    <div id="reveal-container">
+        <h1>Revelación de Roles</h1>
+        <p id="current-player">Jugador 1, presiona para ver tu rol</p>
+        <button id="show-role">Ver Rol</button>
+        <p id="role-text" class="hidden"></p>
+        <button id="next-player" class="hidden">Siguiente Jugador</button>
+        <button id="finish-reveal" class="hidden">Finalizar y Cerrar</button>
+    </div>
+
+    <script>
+        // Datos de categorías
+        window.futbolistas = [
+            "Lionel Messi", "Cristiano Ronaldo", "Neymar Jr.", "Kylian Mbappé", "Erling Haaland",
+            "Kevin De Bruyne", "Mohamed Salah", "Harry Kane", "Bruno Fernandes", "Vinicius Jr.",
+            "Pedri", "Gavi", "Ansu Fati", "Ferran Torres", "João Cancelo",
+            "Rodri", "Sergio Busquets", "Gerard Piqué", "Carles Puyol", "Xavi Hernández",
+            "Andrés Iniesta", "David Villa", "Fernando Torres", "Raúl González", "Iker Casillas",
+            "Sergio Ramos", "Marcelo", "Daniel Alves", "Luis Suárez", "Sunil Chhetri",
+            "Diego Maradona", "Pelé", "Ronaldinho", "Zlatan Ibrahimović", "Wayne Rooney",
+            "David Beckham", "Thierry Henry", "Steven Gerrard", "Frank Lampard", "Didier Drogba",
+            "Karim Benzema", "Luka Modric", "Toni Kroos", "Thibaut Courtois", "Manuel Neuer",
+            "Thomas Müller", "Robert Lewandowski", "Pierre-Emerick Aubameyang", "Jadon Sancho",
+            "Kai Havertz", "Timo Werner", "İlkay Gündoğan", "Phil Foden", "Mason Mount",
+            "Christian Pulisic", "Ruben Dias", "Virgil van Dijk", "Alisson Becker", "Sadio Mané",
+            "Raheem Sterling", "Jack Grealish", "Trent Alexander-Arnold", "Andrew Robertson", "Jordan Henderson",
+            "Fabinho", "Joel Matip", "Ederson", "Bernardo Silva", "Riyad Mahrez",
+            "Gabriel Jesus", "Fernandinho", "Aymeric Laporte", "John Stones", "Kyle Walker",
+            "Benjamin Mendy", "Marcus Rashford", "Anthony Martial", "Paul Pogba", "Jesse Lingard",
+            "Donny van de Beek", "Scott McTominay", "Victor Lindelöf", "Luke Shaw", "Aaron Wan-Bissaka",
+            "Harry Maguire", "Luis Enrique", "Gerard Moreno", "Dani Parejo", "Paco Alcácer",
+            "José Luis Gayà", "Samuel Umtiti", "Jordi Alba", "Antoine Griezmann", "Ousmane Dembélé",
+            "Clément Lenglet", "Ronald Araujo", "Frenkie de Jong", "Memphis Depay"
+        ];
+
+        window.cantantes = [
+            "Taylor Swift", "Ed Sheeran", "Ariana Grande", "Billie Eilish", "Dua Lipa",
+            "The Weeknd", "Bruno Mars", "Adele", "Michael Jackson", "Madonna",
+            "Beyoncé", "Rihanna", "Katy Perry", "Lady Gaga", "Justin Bieber",
+            "Shawn Mendes", "Olivia Rodrigo", "Harry Styles", "Lizzo", "Doja Cat",
+            "Bad Bunny", "J Balvin", "Rosalia", "Shakira", "Enrique Iglesias",
+            "Luis Miguel", "Juanes", "Carlos Vives", "Marc Anthony", "Gloria Estefan"
+        ];
+
+        window.streamers = [
+            "Ibai Llanos", "TheGrefg", "AuronPlay", "Rubius", "ElMariana",
+            "Vegetta777", "Willyrex", "Alexby11", "Luzu", "ZarcortGame",
+            "Shadoune", "Folagor", "ByCalitos", "Cristinini", "Nate Gentile",
+            "Amouranth", "Pokimane", "Shroud", "Ninja", "TimTheTatman",
+            "DrLupo", "xQc", "Asmongold", "Forsen", "PewDiePie"
+        ];
+
+        window.marcasFamosas = [
+            "Nike", "Adidas", "Apple", "Samsung", "Coca-Cola",
+            "Pepsi", "McDonald's", "Starbucks", "Google", "Amazon",
+            "Facebook", "Instagram", "Twitter", "YouTube", "Netflix",
+            "Disney", "Marvel", "DC Comics", "Sony", "Microsoft",
+            "Tesla", "BMW", "Mercedes-Benz", "Audi", "Porsche",
+            "Louis Vuitton", "Gucci", "Prada", "Chanel", "Rolex"
+        ];
+
+        window.seriesYPeliculas = [
+            "Breaking Bad", "Game of Thrones", "The Mandalorian", "Stranger Things", "The Crown",
+            "Black Mirror", "The Witcher", "Money Heist", "Narcos", "The Office",
+            "Friends", "The Big Bang Theory", "Sherlock", "Doctor Who", "Star Wars",
+            "Harry Potter", "Lord of the Rings", "Avengers", "Spider-Man", "Batman",
+            "Inception", "Interstellar", "The Dark Knight", "Pulp Fiction", "Forrest Gump",
+            "Titanic", "Avatar", "Jurassic Park", "The Matrix", "Gladiator"
+        ];
+
+        window.clubesFutbol = [
+            "Real Madrid", "FC Barcelona", "Manchester United", "Liverpool", "Chelsea",
+            "Manchester City", "Arsenal", "Tottenham", "Bayern Munich", "Borussia Dortmund",
+            "Juventus", "AC Milan", "Inter Milan", "Napoli", "Roma",
+            "Paris Saint-Germain", "Olympique de Marseille", "Lyon", "Atlético Madrid", "Sevilla",
+            "Valencia", "Villarreal", "Athletic Bilbao", "Real Sociedad", "Espanyol",
+            "Ajax", "PSV Eindhoven", "Feyenoord", "Benfica", "Porto"
+        ];
+
+        let players = [];
+        let currentPlayer = 0;
+        let selectedTheme = null;
+        let numPlayers = 3;
+        let customNamesList = [];
+
+        // Función para mezclar array
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Asignar roles aleatoriamente
+        function assignRoles() {
+            // Set available names
+            availableNames = [...window[selectedTheme]];
+            // Shuffle names
+            availableNames = shuffleArray(availableNames);
+
+            const numImpostors = numPlayers > 7 ? 2 : 1;
+            const impostorIndices = [];
+            while (impostorIndices.length < numImpostors) {
+                const idx = Math.floor(Math.random() * numPlayers);
+                if (!impostorIndices.includes(idx)) {
+                    impostorIndices.push(idx);
+                }
+            }
+            impostorIndices.forEach(idx => {
+                players[idx].role = 'impostor';
+            });
+
+            // Assign the same name to all normals
+            const randomIndex = Math.floor(Math.random() * availableNames.length);
+            const assignedName = availableNames[randomIndex];
+            players.forEach(player => {
+                if (player.role !== 'impostor') {
+                    player.name = assignedName;
+                }
+            });
+        }
+
+        window.onload = function() {
+            const data = localStorage.getItem('gameData');
+            if (data) {
+                const gameData = JSON.parse(data);
+                selectedTheme = gameData.selectedTheme;
+                numPlayers = gameData.numPlayers;
+                customNamesList = gameData.customNamesList || [];
+                const playerNames = gameData.playerNames;
+                // Crear players
+                players = [];
+                for (let i = 0; i < numPlayers; i++) {
+                    players.push({ id: i+1, playerName: playerNames[i], role: 'normal', name: null });
+                }
+                assignRoles();
+                updateDisplay();
+            } else {
+                alert('No hay datos de juego. Vuelve al juego principal.');
+                window.close();
+            }
+        };
+
+        function updateDisplay() {
+            if (currentPlayer < players.length) {
+                document.getElementById('current-player').textContent = `${players[currentPlayer].playerName}, presiona para ver tu rol`;
+                document.getElementById('role-text').classList.add('hidden');
+                document.getElementById('show-role').classList.remove('hidden');
+                document.getElementById('next-player').classList.add('hidden');
+                document.getElementById('finish-reveal').classList.add('hidden');
+            } else {
+                document.getElementById('current-player').textContent = 'Todos los roles han sido revelados.';
+                document.getElementById('show-role').classList.add('hidden');
+                document.getElementById('next-player').classList.add('hidden');
+                document.getElementById('finish-reveal').classList.remove('hidden');
+            }
+        }
+
+        document.getElementById('show-role').addEventListener('click', function() {
+            const role = players[currentPlayer].role;
+            if (role === 'impostor') {
+                document.getElementById('role-text').textContent = '¡Eres el IMPOSTOR!';
+            } else {
+                document.getElementById('role-text').textContent = `Tu personaje es: ${players[currentPlayer].name}`;
+            }
+            document.getElementById('role-text').classList.remove('hidden');
+            document.getElementById('show-role').classList.add('hidden');
+            document.getElementById('next-player').classList.remove('hidden');
+        });
+
+        document.getElementById('next-player').addEventListener('click', function() {
+            currentPlayer++;
+            updateDisplay();
+        });
+
+        document.getElementById('finish-reveal').addEventListener('click', function() {
+            window.close();
+        });
+    </script>
+</body>
+</html>

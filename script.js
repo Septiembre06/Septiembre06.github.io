@@ -1,410 +1,419 @@
+// script.js - Lógica del juego Impostor Caney
 
-document.addEventListener('DOMContentLoaded',()=>{
-  const form=document.getElementById('regForm');
-  const teamsList=document.getElementById('teams-list');
-  const teamsEmpty=document.getElementById('teams-empty');
-  const msg=document.getElementById('form-msg');
-  const menuBtn=document.getElementById('menuBtn');
-  const nav=document.getElementById('nav');
+// Variables globales
+let numPlayers = 3;
+let players = [];
+let currentPlayer = 0;
+let votes = [];
+let impostors = [];
+let gameState = 'start';
+let timerInterval = null;
+let timeLeft = 60;
+let selectedTheme = null;
+let customNamesList = [];
+let availableNames = [];
 
-  menuBtn.addEventListener('click',()=>{
-    const shown = nav.style.display === 'block';
-    nav.style.display = shown ? '' : 'block';
-  });
+
+window.futbolistas = [
+    "Lionel Messi", "Cristiano Ronaldo", "Neymar Jr.", "Kylian Mbappé", "Erling Haaland",
+    "Kevin De Bruyne", "Mohamed Salah", "Harry Kane", "Bruno Fernandes", "Vinicius Jr.",
+    "Pedri", "Gavi", "Ansu Fati", "Ferran Torres", "João Cancelo",
+    "Rodri", "Sergio Busquets", "Gerard Piqué", "Carles Puyol", "Xavi Hernández",
+    "Andrés Iniesta", "David Villa", "Fernando Torres", "Raúl González", "Iker Casillas",
+    "Sergio Ramos", "Marcelo", "Daniel Alves", "Luis Suárez", "Sunil Chhetri",
+    "Diego Maradona", "Pelé", "Ronaldinho", "Zlatan Ibrahimović", "Wayne Rooney",
+    "David Beckham", "Thierry Henry", "Steven Gerrard", "Frank Lampard", "Didier Drogba",
+    "Karim Benzema", "Luka Modric", "Toni Kroos", "Thibaut Courtois", "Manuel Neuer",
+    "Thomas Müller", "Robert Lewandowski", "Pierre-Emerick Aubameyang", "Jadon Sancho",
+    "Kai Havertz", "Timo Werner", "İlkay Gündoğan", "Phil Foden", "Mason Mount",
+    "Christian Pulisic", "Ruben Dias", "Virgil van Dijk", "Alisson Becker", "Sadio Mané",
+    "Raheem Sterling", "Jack Grealish", "Trent Alexander-Arnold", "Andrew Robertson", "Jordan Henderson",
+    "Fabinho", "Joel Matip", "Ederson", "Bernardo Silva", "Riyad Mahrez",
+    "Gabriel Jesus", "Fernandinho", "Aymeric Laporte", "John Stones", "Kyle Walker",
+    "Benjamin Mendy", "Marcus Rashford", "Anthony Martial", "Paul Pogba", "Jesse Lingard",
+    "Donny van de Beek", "Scott McTominay", "Victor Lindelöf", "Luke Shaw", "Aaron Wan-Bissaka",
+    "Harry Maguire", "Luis Enrique", "Gerard Moreno", "Dani Parejo", "Paco Alcácer",
+    "José Luis Gayà", "Samuel Umtiti", "Jordi Alba", "Antoine Griezmann", "Ousmane Dembélé",
+    "Clément Lenglet", "Ronald Araujo", "Frenkie de Jong", "Memphis Depay"
+];
+
+window.cantantes = [
+    "Taylor Swift", "Ed Sheeran", "Ariana Grande", "Billie Eilish", "Dua Lipa",
+    "The Weeknd", "Bruno Mars", "Adele", "Michael Jackson", "Madonna",
+    "Beyoncé", "Rihanna", "Katy Perry", "Lady Gaga", "Justin Bieber",
+    "Shawn Mendes", "Olivia Rodrigo", "Harry Styles", "Lizzo", "Doja Cat",
+    "Bad Bunny", "J Balvin", "Rosalia", "Shakira", "Enrique Iglesias",
+    "Luis Miguel", "Juanes", "Carlos Vives", "Marc Anthony", "Gloria Estefan","Bad bunny"
+];
+
+window.marcasFamosas = [
+    "Nike", "Adidas", "Apple", "Samsung", "Coca-Cola",
+    "Pepsi", "McDonald's", "Starbucks", "Google", "Amazon",
+    "Facebook", "Instagram", "Twitter", "YouTube", "Netflix",
+    "Disney", "Marvel", "DC Comics", "Sony", "Microsoft",
+    "Tesla", "BMW", "Mercedes-Benz", "Audi", "Porsche",
+    "Louis Vuitton", "Gucci", "Prada", "Chanel", "Rolex"
+];
+
+window.streamers = [
+    "Ibai Llanos", "TheGrefg", "AuronPlay", "Rubius", "ElMariana",
+    "Vegetta777", "Willyrex", "Alexby11", "Luzu", "ZarcortGame",
+    "Shadoune", "Folagor", "ByCalitos", "Cristinini", "Nate Gentile",
+    "Amouranth", "Pokimane", "Shroud", "Ninja", "TimTheTatman",
+    "DrLupo", "xQc", "Asmongold", "Forsen", "PewDiePie"
+];
+
+window.seriesYPeliculas = [
+    "Breaking Bad", "Game of Thrones", "The Mandalorian", "Stranger Things", "The Crown",
+    "Black Mirror", "The Witcher", "Money Heist", "Narcos", "The Office",
+    "Friends", "The Big Bang Theory", "Sherlock", "Doctor Who", "Star Wars",
+    "Harry Potter", "Lord of the Rings", "Avengers", "Spider-Man", "Batman",
+    "Inception", "Interstellar", "The Dark Knight", "Pulp Fiction", "Forrest Gump",
+    "Titanic", "Avatar", "Jurassic Park", "The Matrix", "Gladiator"
+];
+
+window.clubesFutbol = [
+    "Real Madrid", "FC Barcelona", "Manchester United", "Liverpool", "Chelsea",
+    "Manchester City", "Arsenal", "Tottenham", "Bayern Munich", "Borussia Dortmund",
+    "Juventus", "AC Milan", "Inter Milan", "Napoli", "Roma",
+    "Paris Saint-Germain", "Olympique de Marseille", "Lyon", "Atlético Madrid", "Sevilla",
+    "Valencia", "Villarreal", "Athletic Bilbao", "Real Sociedad", "Espanyol",
+    "Ajax", "PSV Eindhoven", "Feyenoord", "Benfica", "Porto"
+];
 
 
-  const showTableBtnNav = document.getElementById('showTableBtn');
-  const showCalendarBtnNav = document.getElementById('showCalendarBtn');
-  document.querySelectorAll('.nav a[href^="#"]').forEach(a => {
-    a.addEventListener('click', (e) => {
-      const href = a.getAttribute('href');
-      if(!href || href === '#') return;
-      const id = href.slice(1);
-  
-      if(id === 'fixture' && showTableBtnNav){
-        e.preventDefault();
-        showTableBtnNav.click();
+const startScreen = document.getElementById('start-screen');
+const roleAssignment = document.getElementById('role-assignment');
+const discussion = document.getElementById('discussion');
+const voting = document.getElementById('voting');
+const results = document.getElementById('results');
+const modeSelection = document.getElementById('mode-selection');
+const customNames = document.getElementById('custom-names');
+const playerNames = document.getElementById('player-names');
+const assigning = document.getElementById('assigning');
+const rolesReveal = document.getElementById('roles-reveal');
+const waiting = document.getElementById('waiting');
+
+const playerCountInput = document.getElementById('player-count');
+const startGameBtn = document.getElementById('start-game');
+const showRoleBtn = document.getElementById('show-role');
+const nextPlayerBtn = document.getElementById('next-player');
+const startVotingBtn = document.getElementById('start-voting');
+const nextVoteBtn = document.getElementById('next-vote');
+const restartGameBtn = document.getElementById('restart-game');
+const namesInput = document.getElementById('names-input');
+const submitNamesBtn = document.getElementById('submit-names');
+const submitPlayerNamesBtn = document.getElementById('start-link');
+const continueToDiscussionBtn = document.getElementById('continue-to-discussion');
+
+const currentPlayerText = document.getElementById('current-player');
+const roleText = document.getElementById('role-text');
+const timeLeftSpan = document.getElementById('time-left');
+const votingPlayerText = document.getElementById('voting-player');
+const voteOptions = document.getElementById('vote-options');
+const impostorReveal = document.getElementById('impostor-reveal');
+const outcome = document.getElementById('outcome');
+
+// Funciones de sonido (opcional)
+function playSound(sound) {
+    // Implementar sonidos básicos si es necesario
+    // const audio = new Audio('path/to/sound.mp3');
+    // audio.play();
+}
+
+
+function showScreen(screen) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    screen.classList.add('active');
+}
+
+
+function startGame() {
+    numPlayers = parseInt(playerCountInput.value);
+    if (numPlayers < 3) {
+        alert('Mínimo 3 jugadores');
         return;
-      }
-      if(id === 'calendar' && showCalendarBtnNav){
-        e.preventDefault();
-        showCalendarBtnNav.click();
-        return;
-      }
-      const target = document.getElementById(id);
-      if(target){
-        e.preventDefault();
-        target.scrollIntoView({behavior:'smooth'});
-      }
-      
-      if(window.innerWidth <= 520 && nav){ nav.style.display = ''; }
-    });
-  });
-
-  const showTableBtn = document.getElementById('showTableBtn');
-  const fixtureSection = document.getElementById('fixture');
-  const closeTableBtn = document.getElementById('closeTableBtn');
-
-  // Abrir la tabla en una página separada en lugar de mostrarla en la misma página
-  if(showTableBtn){
-    showTableBtn.addEventListener('click', ()=>{
-      window.location.href = 'tabla.html';
-    });
-  }
-
-  if(closeTableBtn && fixtureSection){
-    closeTableBtn.addEventListener('click', ()=>{
-      fixtureSection.style.display = 'none';
-      showTableBtn.focus();
-    });
-  }
-
-
-  const showCalendarBtn = document.getElementById('showCalendarBtn');
-  const calendarSection = document.getElementById('calendar');
-  const closeCalendarBtn = document.getElementById('closeCalendarBtn');
-
-  // Abrir el calendario en una página separada en lugar de mostrarlo en la misma página
-  if(showCalendarBtn){
-    showCalendarBtn.addEventListener('click', ()=>{
-      window.location.href = 'calendar.html';
-    });
-  }
-
-  if(closeCalendarBtn && calendarSection){
-    closeCalendarBtn.addEventListener('click', ()=>{
-      calendarSection.style.display = 'none';
-      showCalendarBtn.focus();
-    });
-  }
-
-
-  const showTeamsBtn = document.getElementById('showTeamsBtn');
-  const teamsSection = document.getElementById('teams');
-  const closeTeamsBtn = document.getElementById('closeTeamsBtn');
-
-  // Abrir la página de equipos en lugar de mostrarla en la misma página
-  if(showTeamsBtn){
-    showTeamsBtn.addEventListener('click', ()=>{
-      window.location.href = 'equipos.html';
-    });
-  }
-
-  if(closeTeamsBtn && teamsSection){
-    closeTeamsBtn.addEventListener('click', ()=>{
-      teamsSection.style.display = 'none';
-      showTeamsBtn.focus();
-    });
-  }
-
-
-  // Replace inline team controls with a modal-based editor for players
-  function teamPlayersStorageKey(teamName){ return `team::${encodeURIComponent(teamName)}::players`; }
-
-  function loadPlayersByName(name){ if(!name) return []; try{ const raw = localStorage.getItem(teamPlayersStorageKey(name)); return raw ? JSON.parse(raw) : []; }catch(e){ return []; } }
-  function savePlayersByName(name, players){ if(!name) return; try{ localStorage.setItem(teamPlayersStorageKey(name), JSON.stringify(players)); }catch(e){ console.error('save players',e); } }
-
-  function renderPlayersIn(container, name){
-    const players = loadPlayersByName(name) || [];
-    container.innerHTML = '';
-    if(!players.length){ const li = document.createElement('li'); li.className='muted'; li.textContent='Sin jugadores registrados'; container.appendChild(li); return; }
-    players.forEach((p, idx)=>{
-      const li = document.createElement('li'); li.style.display='flex'; li.style.justifyContent='space-between'; li.style.alignItems='center';
-      const left = document.createElement('span');
-      left.innerHTML = `${p.name} <small style="color:var(--muted)">#${p.number}</small>`;
-      if(p.captain){ const cap = document.createElement('span'); cap.className = 'player-captain'; cap.textContent = 'C'; cap.style.marginLeft = '8px'; left.appendChild(cap); }
-      li.appendChild(left);
-      const del = document.createElement('button'); del.textContent='Eliminar'; del.type='button'; del.style.background='transparent'; del.style.border='0'; del.style.color='var(--muted)'; del.style.cursor='pointer';
-      del.addEventListener('click', ()=>{ const arr = loadPlayersByName(name); arr.splice(idx,1); savePlayersByName(name, arr); renderPlayersIn(container, name); updateTeamItemUI(name); });
-      li.appendChild(del);
-      container.appendChild(li);
-    });
-  }
-
-  // Update the in-page team item UI (team-players list) for all occurrences of a team
-  function updateTeamItemUI(teamName){
-    if(!teamName) return;
-    // update any .team-item entries
-    const items = document.querySelectorAll(`.teams-list .team-item[data-team-name]`);
-    items.forEach(item=>{
-      const nameAttr = item.getAttribute('data-team-name') || item.querySelector('.team-name')?.textContent;
-      if(!nameAttr) return;
-      if(nameAttr.trim().toLowerCase() !== teamName.trim().toLowerCase()) return;
-      const info = item.querySelector('.team-info'); if(!info) return;
-      let ul = info.querySelector('.team-players');
-      if(!ul){ ul = document.createElement('ul'); ul.className = 'team-players small muted'; info.insertBefore(ul, info.querySelector('.muted') || null); }
-      const players = loadPlayersByName(teamName) || [];
-      ul.innerHTML = '';
-      if(!players.length){ ul.innerHTML = '<li class="muted">Sin jugadores registrados</li>'; return; }
-      players.forEach((p, idx)=>{
-        const li = document.createElement('li'); li.style.display = 'flex'; li.style.justifyContent = 'space-between'; li.style.alignItems = 'center';
-        const left = document.createElement('span'); left.innerHTML = `${p.name} <small style=\"color:var(--muted)\">#${p.number}</small>`;
-        if(p.captain){ const cap = document.createElement('span'); cap.className='player-captain'; cap.textContent='C'; cap.style.marginLeft='8px'; left.appendChild(cap); }
-        li.appendChild(left);
-        const del = document.createElement('button'); del.textContent = 'Eliminar'; del.type='button'; del.style.background='transparent'; del.style.border='0'; del.style.color='var(--muted)'; del.style.cursor='pointer';
-        del.addEventListener('click', ()=>{ const arr = loadPlayersByName(teamName); arr.splice(idx,1); savePlayersByName(teamName, arr); updateTeamItemUI(teamName); const rosterEl = document.getElementById('teamRoster'); if(rosterEl) renderPlayersIn(rosterEl, teamName); });
-        li.appendChild(del);
-        ul.appendChild(li);
-      });
-    });
-  }
-
-  function createTeamModalIfMissing(){
-    if(document.getElementById('teamModal')) return;
-    const html = `
-    <div id="teamModal" class="team-modal" aria-hidden="true">
-      <div class="team-modal-backdrop" id="teamModalBackdrop"></div>
-      <div class="team-modal-panel" role="dialog" aria-modal="true" aria-labelledby="teamModalTitle">
-        <button id="closeTeamModal" class="modal-close" aria-label="Cerrar panel">✕</button>
-        <div class="team-panel-inner">
-          <div class="team-left">
-            <div class="team-card card">
-              <img id="teamModalLogo" src="" alt="Logo equipo" class="team-logo">
-              <div class="team-badge-label">Equipo</div>
-              <h3 id="teamModalName">Equipo</h3>
-              <p class="muted">Estadísticas del equipo</p>
-            </div>
-            <div class="card stats-compact">
-              <h4>Plantilla</h4>
-              <ul id="teamRoster" class="roster-list muted"></ul>
-            </div>
-          </div>
-          <div class="team-right">
-            <div class="card roster-card">
-              <h4 id="teamModalTitle">Gestionar jugadores</h4>
-              <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
-                <input id="modalPlayerName" placeholder="Nombre" style="flex:1;padding:.5rem;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text)">
-                <input id="modalPlayerNumber" placeholder="#" style="width:80px;padding:.5rem;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text)">
-                <button id="modalAddPlayer" class="btn">Añadir</button>
-              </div>
-              <div id="modalPlayersMsg" class="muted"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>`;
-    const div = document.createElement('div'); div.innerHTML = html; document.body.appendChild(div.firstElementChild);
-  }
-
-  function openTeamModalWith(name, logo){
-    if(!name) return;
-    createTeamModalIfMissing();
-    const teamModalEl = document.getElementById('teamModal');
-    const backdrop = document.getElementById('teamModalBackdrop');
-    const closeBtn = document.getElementById('closeTeamModal');
-    const logoEl = document.getElementById('teamModalLogo');
-    const nameEl = document.getElementById('teamModalName');
-    const rosterEl = document.getElementById('teamRoster');
-    const addName = document.getElementById('modalPlayerName');
-    const addNum = document.getElementById('modalPlayerNumber');
-    const addBtn = document.getElementById('modalAddPlayer');
-    const msgEl = document.getElementById('modalPlayersMsg');
-
-    logoEl.src = logo || '';
-    logoEl.alt = `Logo ${name}`;
-    nameEl.textContent = name;
-    renderPlayersIn(rosterEl, name);
-
-    addBtn.onclick = ()=>{
-      const nm = addName.value.trim(); const num = addNum.value.trim(); if(!nm){ msgEl.textContent = 'Ingresa nombre'; return; }
-      const arr = loadPlayersByName(name); arr.push({name:nm, number:num||''}); savePlayersByName(name, arr); renderPlayersIn(rosterEl, name);
-      updateTeamItemUI(name);
-      addName.value = ''; addNum.value = ''; msgEl.textContent = 'Jugador añadido'; setTimeout(()=>msgEl.textContent='','1200');
-    };
-
-    function close(){ teamModalEl.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
-    function show(){ teamModalEl.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; if(closeBtn) closeBtn.focus(); }
-
-    if(closeBtn) closeBtn.onclick = close;
-    if(backdrop) backdrop.onclick = close;
-    document.addEventListener('keydown', function onEsc(e){ if(e.key==='Escape'){ close(); document.removeEventListener('keydown', onEsc); } });
-
-    show();
-  }
-
-  // bind team-name clicks to open modal
-  document.querySelectorAll('.teams-list .team-name').forEach(btn => {
-    btn.addEventListener('click', (e)=>{
-      const item = btn.closest('.team-item'); if(!item) return;
-      const name = item.getAttribute('data-team-name') || btn.textContent.trim();
-      const logo = item.querySelector('.team-thumb')?.src || '';
-      openTeamModalWith(name, logo);
-    });
-    btn.addEventListener('keydown', (e)=>{ if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); btn.click(); } });
-  });
-
-  // Initialize in-page team lists from storage
-  document.querySelectorAll('.teams-list .team-item').forEach(item=>{
-    const name = item.getAttribute('data-team-name') || item.querySelector('.team-name')?.textContent?.trim();
-    if(name) updateTeamItemUI(name);
-  });
-
-  // Attach inline add-form handlers (equipos.html)
-  document.querySelectorAll('.team-add-form').forEach(form => {
-    form.addEventListener('submit', (ev) => {
-      ev.preventDefault();
-      const teamName = form.getAttribute('data-team-name') || '';
-      const nameInput = form.querySelector('[name="playerName"]');
-      const numInput = form.querySelector('[name="playerNumber"]');
-      const capInput = form.querySelector('[name="captain"]');
-      const playerName = (nameInput && nameInput.value || '').trim();
-      const playerNumber = (numInput && numInput.value || '').trim() || '';
-      const isCaptain = !!(capInput && capInput.checked);
-      if(!playerName) { if(nameInput) nameInput.focus(); return; }
-      const arr = loadPlayersByName(teamName) || [];
-      arr.push({ name: playerName, number: playerNumber, captain: isCaptain });
-      try{
-        savePlayersByName(teamName, arr);
-      }catch(err){
-        console.error('error saving players', err);
-      }
-      // update the list in the same team card immediately
-      const parentItem = form.closest('.team-item') || form.closest('.team-info');
-      let teamList = parentItem && parentItem.querySelector('.team-players');
-      if(!teamList && parentItem){
-        teamList = document.createElement('ul');
-        teamList.className = 'team-players small muted';
-        (parentItem.querySelector('.team-info') || parentItem).appendChild(teamList);
-      }
-      if(teamList) renderPlayersIn(teamList, teamName);
-      // also update other occurrences and modal roster if open
-      updateTeamItemUI(teamName);
-      const rosterEl = document.getElementById('teamRoster'); if(rosterEl) renderPlayersIn(rosterEl, teamName);
-      // clear form
-      if(nameInput) nameInput.value = '';
-      if(numInput) numInput.value = '';
-      if(capInput) capInput.checked = false;
-      // show temporary saved message
-      let msg = form.querySelector('.form-save-msg');
-      if(!msg){ msg = document.createElement('div'); msg.className = 'form-save-msg muted'; msg.style.marginTop = '6px'; msg.style.fontSize = '0.9rem'; form.appendChild(msg); }
-      msg.textContent = 'Guardado';
-      setTimeout(()=>{ if(msg) msg.textContent = ''; }, 1500);
-    });
-  });
-
-  
-  const showPlayerLink = document.getElementById('showPlayerLink');
-  const playerSection = document.getElementById('player');
-  const closePlayerBtn = document.getElementById('closePlayerBtn');
-
-  if(showPlayerLink && playerSection){
-    showPlayerLink.addEventListener('click', (e)=>{
-      e.preventDefault();
-      playerSection.style.display = 'block';
-      playerSection.scrollIntoView({behavior:'smooth'});
-    });
-  }
-
-  if(closePlayerBtn && playerSection){
-    closePlayerBtn.addEventListener('click', ()=>{
-      playerSection.style.display = 'none';
-      if(showPlayerLink) showPlayerLink.focus();
-    });
-  }
-
-  document.querySelectorAll('.accordion').forEach(accordion => {
-    accordion.querySelectorAll('.item').forEach(item => {
-      const header = item.querySelector('.item-header');
-      if(!header) return;
-      header.addEventListener('click', ()=>{
-        const isOpen = item.classList.contains('open');
-       
-        accordion.querySelectorAll('.item').forEach(i=>i.classList.remove('open'));
-        if(!isOpen) item.classList.add('open');
-      });
-    });
-  });
-
-  function addTeamToDOM(team){
-   
-    if(teamsList){
-      const li=document.createElement('li');
-      li.textContent = `${team.name} — capitán: ${team.captain} (${team.players} jugadores)`;
-      li.className = 'team-item';
-      teamsList.appendChild(li);
-      if(teamsEmpty) teamsEmpty.style.display='none';
     }
-  }
-
-
-  if(form){
-    form.addEventListener('submit', (e)=>{
-      e.preventDefault();
-      const name=document.getElementById('teamName').value.trim();
-      const captain=document.getElementById('captainName').value.trim();
-      const phone=document.getElementById('phone').value.trim();
-      const email=document.getElementById('email').value.trim();
-      const players=document.getElementById('playersCount').value;
-
-      if(!name || !captain){
-        if(msg) {
-          msg.textContent='Por favor completa el nombre del equipo y del capitán.';
-          msg.style.color='crimson';
+    if (!selectedTheme) {
+        alert('Selecciona un modo');
+        return;
+    }
+    if (selectedTheme === 'personalizado') {
+        if (!customNamesList || customNamesList.length < numPlayers) {
+            updateCustomScreen();
+            showScreen(customNames);
+            return;
         }
-        return;
-      }
-
-     
-      const team={name, captain, phone, email, players};
-      addTeamToDOM(team);
-      if(msg){
-        msg.textContent='Inscripción recibida. ¡Gracias!';
-        msg.style.color='green';
-      }
-      form.reset();
-    });
-  }
-  const teamModal = document.getElementById('teamModal');
-  const teamModalBackdrop = document.getElementById('teamModalBackdrop');
-  const closeTeamModal = document.getElementById('closeTeamModal');
-  const teamModalLogo = document.getElementById('teamModalLogo');
-  const teamModalName = document.getElementById('teamModalName');
-
-  function openTeamModalWith(teamName, teamLogo){
-    if(!teamModal) return;
-    teamModalLogo.src = teamLogo || '';
-    teamModalLogo.alt = `Logo ${teamName || ''}`;
-    teamModalName.textContent = teamName || '';
-
-    const rosterEl = document.getElementById('teamRoster');
-    if(rosterEl){
-      if(teamName === 'Gladiadores'){
-        rosterEl.innerHTML = `
-          <ul class="roster-list">
-            <li class="player-item"><div class="player-left"><div class="player-avatar"></div><div class="player-name">Kevin <span class="player-captain">C</span></div></div><div class="player-number">8</div></li>
-            <li class="player-item"><div class="player-left"><div class="player-avatar"></div><div class="player-name">Adan</div></div><div class="player-number">3</div></li>
-            <li class="player-item"><div class="player-left"><div class="player-avatar"></div><div class="player-name">Haley</div></div><div class="player-number">5</div></li>
-            <li class="player-item"><div class="player-left"><div class="player-avatar"></div><div class="player-name">Alian</div></div><div class="player-number">1</div></li>
-            <li class="player-item"><div class="player-left"><div class="player-avatar"></div><div class="player-name">Juliyo</div></div><div class="player-number">7</div></li>
-          </ul>
-        `;
-      } else {
-        rosterEl.innerHTML = '<div class="muted">No hay jugadores registrados para este equipo</div>';
-      }
     }
-    teamModal.setAttribute('aria-hidden','false');
-    document.body.style.overflow = 'hidden';
-    if(closeTeamModal) closeTeamModal.focus();
-  }
+    
+    createPlayerNameInputs();
+    showScreen(playerNames);
+}
 
-  function closeTeam(){
-    if(!teamModal) return;
-    teamModal.setAttribute('aria-hidden','true');
-    document.body.style.overflow = '';
 
-    const firstBadge = document.querySelector('.badge-img[tabindex]');
-    if(firstBadge) firstBadge.focus();
-  }
+function assignRoles() {
 
-  document.querySelectorAll('.badge-img[data-team-name]').forEach(b => {
-    const name = b.getAttribute('data-team-name');
-    const logo = b.getAttribute('data-team-logo') || b.src;
-    b.addEventListener('click', ()=> openTeamModalWith(name, logo));
-    b.addEventListener('keydown', (e)=>{ if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openTeamModalWith(name, logo); } });
-  });
-
-  if(closeTeamModal) closeTeamModal.addEventListener('click', closeTeam);
-  if(teamModalBackdrop) teamModalBackdrop.addEventListener('click', closeTeam);
-  document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeTeam(); });
+    if (selectedTheme === 'personalizado') {
+        availableNames = [...customNamesList];
+    } else {
+        availableNames = [...window[selectedTheme]];
+    }
   
+    availableNames = shuffleArray(availableNames);
+
+    const numImpostors = numPlayers > 7 ? 2 : 1;
+    const impostorIndices = [];
+    while (impostorIndices.length < numImpostors) {
+        const idx = Math.floor(Math.random() * numPlayers);
+        if (!impostorIndices.includes(idx)) {
+            impostorIndices.push(idx);
+        }
+    }
+    impostorIndices.forEach(idx => {
+        players[idx].role = 'impostor';
+    });
+    impostors = players.filter(p => p.role === 'impostor').map(p => p.id);
+
+   
+    let nameIndex = 0;
+    players.forEach(player => {
+        if (player.role !== 'impostor') {
+            player.name = availableNames[nameIndex % availableNames.length];
+            nameIndex++;
+        }
+    });
+
+    // Guardar en localStorage
+    localStorage.setItem('impostorGame', JSON.stringify({ players, impostors }));
+}
+
+// Función para crear inputs de nombres de jugadores
+function createPlayerNameInputs() {
+    const container = document.getElementById('player-inputs');
+    container.innerHTML = '';
+    for (let i = 1; i <= numPlayers; i++) {
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.placeholder = `Nombre del Jugador ${i}`;
+        input.id = `player-name-${i}`;
+        container.appendChild(input);
+        container.appendChild(document.createElement('br'));
+    }
+}
+
+// Función para revelar todos los roles
+function revealAllRoles() {
+    const container = document.getElementById('roles-list');
+    container.innerHTML = '';
+    players.forEach(player => {
+        const div = document.createElement('div');
+        div.innerHTML = `<p>${player.playerName}: <button onclick="showPlayerRole(${player.id})">Ver Rol</button> <span id="role-${player.id}" class="hidden"></span></p>`;
+        container.appendChild(div);
+    });
+}
+
+// Función para mostrar el rol de un jugador específico
+function showPlayerRole(id) {
+    const player = players.find(p => p.id === id);
+    const span = document.getElementById(`role-${id}`);
+    if (player.role === 'impostor') {
+        span.textContent = '¡Impostor!';
+    } else {
+        span.textContent = `Personaje - ${player.name}`;
+    }
+    span.classList.remove('hidden');
+}
+
+// Función para actualizar la pantalla de nombres personalizados
+function updateCustomScreen() {
+    document.getElementById('custom-title').textContent = `Ingresa ${numPlayers} Nombres`;
+    document.getElementById('custom-instruction').textContent = `Uno por línea (necesitas ${numPlayers}):`;
+    namesInput.placeholder = Array.from({length: numPlayers}, (_, i) => `Nombre ${i+1}`).join('\n');
+    namesInput.rows = numPlayers;
+}
+
+// Función para empezar la partida después de nombres de jugadores
+function empezarPartida() {
+    // Recopilar nombres de jugadores
+    let playerNames = [];
+    for (let i = 1; i <= numPlayers; i++) {
+        playerNames.push(document.getElementById(`player-name-${i}`).value.trim() || `Jugador ${i}`);
+    }
+    // Guardar datos para la nueva página
+    localStorage.setItem('gameData', JSON.stringify({ selectedTheme, numPlayers, playerNames, customNamesList }));
+    // La página se abrirá con el enlace
+    return true;
+}
+
+// Mostrar rol del jugador actual
+function showRole() {
+    const role = players[currentPlayer].role;
+    // Al presionar, si es impostor, dice "¡Eres el IMPOSTOR!", si no, muestra "Tu personaje es: [Nombre del futbolista]" (o el tema elegido)
+    if (role === 'impostor') {
+        roleText.textContent = '¡Eres el IMPOSTOR!';
+    } else {
+        roleText.textContent = `Tu personaje es: ${players[currentPlayer].name}`;
+    }
+    roleText.classList.remove('hidden');
+    showRoleBtn.classList.add('hidden');
+    nextPlayerBtn.classList.remove('hidden');
+    playSound('roleReveal');
+}
+
+// Pasar al siguiente jugador en asignación
+function nextPlayer() {
+    currentPlayer++;
+    if (currentPlayer >= numPlayers) {
+        startDiscussion();
+    } else {
+        updateRoleDisplay();
+    }
+}
+
+// Actualizar display de rol
+function updateRoleDisplay() {
+    currentPlayerText.textContent = `${players[currentPlayer].playerName}, presiona para ver tu rol`;
+    roleText.classList.add('hidden');
+    showRoleBtn.classList.remove('hidden');
+    nextPlayerBtn.classList.add('hidden');
+}
+
+// Iniciar fase de discusión
+function startDiscussion() {
+    gameState = 'discussion';
+    showScreen(discussion);
+    startTimer();
+}
+
+// Temporizador para discusión
+function startTimer() {
+    timeLeft = 60;
+    timeLeftSpan.textContent = timeLeft;
+    timerInterval = setInterval(() => {
+        timeLeft--;
+        timeLeftSpan.textContent = timeLeft;
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            startVoting();
+        }
+    }, 1000);
+}
+
+// Iniciar fase de votación
+function startVoting() {
+    clearInterval(timerInterval);
+    gameState = 'voting';
+    showScreen(voting);
+    currentPlayer = 0;
+    votes = new Array(numPlayers).fill(null);
+    updateVotingDisplay();
+}
+
+// Actualizar display de votación
+function updateVotingDisplay() {
+    votingPlayerText.textContent = `${players[currentPlayer].playerName}, vota por quién crees que es el impostor:`;
+    voteOptions.innerHTML = '';
+    players.forEach(player => {
+        if (player.id !== players[currentPlayer].id) {
+            const btn = document.createElement('button');
+            btn.textContent = player.playerName;
+            btn.classList.add('vote-button');
+            btn.onclick = () => vote(player.id);
+            voteOptions.appendChild(btn);
+        }
+    });
+    nextVoteBtn.classList.add('hidden');
+}
+
+// Votar
+function vote(votedId) {
+    votes[currentPlayer] = votedId;
+    nextVoteBtn.classList.remove('hidden');
+}
+
+// Pasar al siguiente voto
+function nextVote() {
+    currentPlayer++;
+    if (currentPlayer >= numPlayers) {
+        calculateResults();
+    } else {
+        updateVotingDisplay();
+    }
+}
+
+// Calcular resultados
+function calculateResults() {
+    gameState = 'results';
+    showScreen(results);
+    const voteCounts = {};
+    votes.forEach(vote => {
+        if (vote !== null) {
+            voteCounts[vote] = (voteCounts[vote] || 0) + 1;
+        }
+    });
+    let maxVotes = 0;
+    let accused = null;
+    for (const [player, count] of Object.entries(voteCounts)) {
+        if (count > maxVotes) {
+            maxVotes = count;
+            accused = parseInt(player);
+        }
+    }
+    impostorReveal.textContent = `Los impostores eran: ${impostors.map(id => players.find(p => p.id === id).playerName).join(', ')}.`;
+    if (impostors.includes(accused)) {
+        outcome.textContent = '¡Los jugadores normales ganaron! El/Los impostor(es) fue(ron) descubierto(s).';
+    } else {
+        outcome.textContent = '¡El/Los impostor(es) ganó/ganaron! No fue(ron) descubierto(s).';
+    }
+    playSound(impostors.includes(accused) ? 'victory' : 'defeat');
+}
+
+// Reiniciar juego
+function restartGame() {
+    gameState = 'start';
+    selectedTheme = null;
+    customNamesList = [];
+    availableNames = [];
+    showScreen(modeSelection);
+    localStorage.removeItem('impostorGame');
+}
+
+// Event listeners
+document.querySelectorAll('.mode-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        selectedTheme = btn.dataset.mode;
+        showScreen(startScreen);
+    });
+});
+
+submitNamesBtn.addEventListener('click', () => {
+    const names = namesInput.value.split('\n').map(n => n.trim()).filter(n => n);
+    if (names.length < numPlayers) {
+        alert(`Ingresa al menos ${numPlayers} nombres`);
+        return;
+    }
+    customNamesList = names.slice(0, numPlayers);
+    showScreen(startScreen);
+});
+
+continueToDiscussionBtn.addEventListener('click', () => {
+    startDiscussion();
+});
+
+startGameBtn.addEventListener('click', startGame);
+showRoleBtn.addEventListener('click', showRole);
+nextPlayerBtn.addEventListener('click', nextPlayer);
+startVotingBtn.addEventListener('click', startVoting);
+nextVoteBtn.addEventListener('click', nextVote);
+restartGameBtn.addEventListener('click', restartGame);
+
+// Cargar estado si existe
+window.addEventListener('load', () => {
+    const saved = localStorage.getItem('impostorGame');
+    if (saved) {
+        const data = JSON.parse(saved);
+        players = data.players;
+        impostors = data.impostors;
+        // Restaurar estado si es necesario
+    }
 });

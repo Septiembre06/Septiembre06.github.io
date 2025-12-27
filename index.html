@@ -1,337 +1,109 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Copa Raúl Roja</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-  <meta name="description" content="Página oficial de la Copa Raúl Roja - torneo de fútbol amateur.">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕵️</text></svg>">
+    <title>Impostor Caney - Juego de Deducción Social</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="site-header" id="home">
-    <div class="container header-inner">
-      <h1 class="logo">Copa <span class="highlight">Raúl Rojas</span></h1>
-      <nav class="nav" id="nav">
-        <a href="index.html#home">Inicio</a>
-        <a href="tabla.html">Tabla</a>
-        <a href="calendar.html">Calendario</a>
-        <a href="estadisticas.html">Estadísticas</a>
-        <a href="#goleadores">Goleadores</a>
-        <a href="equipos.html">Equipos</a>
-        <a href="rules.html">Reglas</a>
-      </nav>
-      <button id="menuBtn" class="menu-btn" aria-label="Abrir menú">☰</button>
-      <!-- Top logo badges under nav -->
-      <div class="top-logos">
-        <div class="logo-badges" aria-hidden="true">
-          <img id="team-badge-0" class="badge-img" src="https://sclrcoiisappnzbaxlzc.supabase.co/storage/v1/object/public/team-logos/teams/d00bbe10-d6d8-470a-8ef3-2a4ab27c58c3/logo.jpg" alt="Logo equipo 1" tabindex="0" role="button" aria-label="Equipo 1" data-team-name="Team 1" data-team-logo="https://sclrcoiisappnzbaxlzc.supabase.co/storage/v1/object/public/team-logos/teams/d00bbe10-d6d8-470a-8ef3-2a4ab27c58c3/logo.jpg">
-          <img id="team-badge-1" class="badge-img" src="https://sclrcoiisappnzbaxlzc.supabase.co/storage/v1/object/public/team-logos/teams/32314b3b-6ef8-4e0a-a5f2-0c9b08c75961/logo.jpg" alt="Gladiadores" tabindex="0" role="button" aria-label="Gladiadores" data-team-name="Gladiadores" data-team-logo="https://sclrcoiisappnzbaxlzc.supabase.co/storage/v1/object/public/team-logos/teams/32314b3b-6ef8-4e0a-a5f2-0c9b08c75961/logo.jpg">
-          <img class="badge-img" src="https://sclrcoiisappnzbaxlzc.supabase.co/storage/v1/object/public/team-logos/teams/0b203679-a1c9-49b1-a316-e2a588495d6f/logo.jpg?v=1758390280487" alt="Logo equipo 3">
-          <img class="badge-img" src="https://sclrcoiisappnzbaxlzc.supabase.co/storage/v1/object/public/team-logos/teams/afe8cc36-d1b7-4052-ad89-99443c3e52f0/logo.jpg?v=1758388008060" alt="Logo equipo 4">
-          <img class="badge-img" src="https://sclrcoiisappnzbaxlzc.supabase.co/storage/v1/object/public/team-logos/teams/a9e7ac21-550a-4350-82ae-677979f69a81/logo.jpg?v=1758735227385" alt="Logo equipo 5">
-          <img class="badge-img" src="https://sclrcoiisappnzbaxlzc.supabase.co/storage/v1/object/public/team-logos/teams/37af335f-ef37-4d61-8221-801e13d64713/logo.jpg?v=1758392886644" alt="Logo equipo 6">
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <main>
-    <div class="container dashboard">
-
-      <div class="columns">
-        <section class="main-column">
-          <div class="hero card">
-            <div class="hero-left">
-              <span class="badge-label">TORNEO EN CURSO</span>
-              <h2 class="tournament-title">Raul Rojas Torneo</h2>
-              <p class="lead">El mejor torneo q se realizara en el Caney</p>
-
-              <ul class="meta small">
-                <li><strong>16 de diciembre del  2025</strong></li>
-                <li>6 equipos</li>
-                <li>30 partidos</li>
-              </ul>
-
-              <div class="hero-actions">
-                <button id="showTableBtn" class="btn primary" type="button">Ver tabla</button>
-                <button id="showCalendarBtn" class="btn primary" type="button">Ver calendario</button>
-                <button id="showTeamsBtn" class="btn primary" type="button">Equipos</button>
-                <a href="estadisticas.html" class="btn ghost">Estadísticas</a>
-              </div>
+    <header>
+        <span id="game-logo">🕵️</span>
+    </header>
+    <div id="app">
+        <!-- Pantalla de Selección de Modo -->
+        <div id="mode-selection" class="screen active">
+            <h1>Elige el Modo de Juego</h1>
+            <div id="modes">
+                <button class="mode-btn" data-mode="futbolistas">Futbolistas</button>
+                <button class="mode-btn" data-mode="cantantes">Cantantes</button>
+                <button class="mode-btn" data-mode="streamers">Streaming</button>
+                <button class="mode-btn" data-mode="marcasFamosas">Marcas Famosas</button>
+                <button class="mode-btn" data-mode="seriesYPeliculas">Series y Películas</button>
+                <button class="mode-btn" data-mode="personalizado">Personalizado</button>
             </div>
-
-            <div class="hero-right">
-              <div class="stats-grid">
-                <div class="stat-card">
-                  <div class="stat-num">30</div>
-                  <div class="stat-label">Partidos totales</div>
-                </div>
-                <div class="stat-card">
-                  <div class="stat-num">30</div>
-                  <div class="stat-label">Pendientes</div>
-                </div>
-                <div class="stat-card">
-                  <div class="stat-num">0</div>
-                  <div class="stat-label">Jugados</div>
-                </div>
-                <div class="stat-card">
-                  <div class="stat-num">30</div>
-                  <div class="stat-label">Programados</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Contenedor de pestañas: las secciones se abren aquí como pestañas -->
-          <div id="tabsWrapper" class="tabs-wrapper" style="display:none;">
-            <div id="tabsBar" class="tabs-bar" role="tablist" aria-label="Pestañas"></div>
-            <div id="tabsContent" class="tabs-content"></div>
-          </div>
-
-          <div class="cards-row">
-            <div class="mini-card card">
-              <div style="display:flex;flex-direction:column;gap:10px">
-                <div style="width:56px;height:56px;border-radius:12px;background:linear-gradient(180deg,#072c33,#05303a);display:flex;align-items:center;justify-content:center;font-size:24px">🏆</div>
-                <div>
-                  <h4 style="margin:.2rem 0 .25rem">Tabla general</h4>
-                  <p class="muted" style="margin:0">Revisa la posición de cada equipo.</p>
-                </div>
-                <div style="margin-top:6px"><a href="tabla.html" class="link-small">Ver sección ›</a></div>
-              </div>
-            </div>
-
-            <div class="mini-card card">
-              <div style="display:flex;flex-direction:column;gap:10px">
-                <div style="width:56px;height:56px;border-radius:12px;background:linear-gradient(180deg,#0b2a3a,#052733);display:flex;align-items:center;justify-content:center;font-size:24px">📅</div>
-                <div>
-                  <h4 style="margin:.2rem 0 .25rem">Calendario</h4>
-                  <p class="muted" style="margin:0">Consulta las fechas de los partidos.</p>
-                </div>
-                <div style="margin-top:6px"><a href="calendar.html" class="link-small">Ver sección ›</a></div>
-              </div>
-            </div>
-
-            <div class="mini-card card">
-              <div style="display:flex;flex-direction:column;gap:10px">
-                <div style="width:56px;height:56px;border-radius:12px;background:linear-gradient(180deg,#2b1f3a,#22162d);display:flex;align-items:center;justify-content:center;font-size:24px">⚽</div>
-                <div>
-                  <h4 style="margin:.2rem 0 .25rem">Goleadores</h4>
-                  <p class="muted" style="margin:0">Ranking de anotadores del torneo.</p>
-                </div>
-                <div style="margin-top:6px"><a href="estadisticas.html#tab-goleadores" class="link-small">Ver sección ›</a></div>
-              </div>
-            </div>
-
-            <div class="mini-card card">
-              <div style="display:flex;flex-direction:column;gap:10px">
-                <div style="width:56px;height:56px;border-radius:12px;background:linear-gradient(180deg,#2a1220,#321222);display:flex;align-items:center;justify-content:center;font-size:24px">📊</div>
-                <div>
-                  <h4 style="margin:.2rem 0 .25rem">Estadísticas</h4>
-                  <p class="muted" style="margin:0">Estadísticas detalladas de partidos.</p>
-                </div>
-                <div style="margin-top:6px"><a href="estadisticas.html" class="link-small">Ver sección ›</a></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Sección Jugador de la Jornada (inicialmente oculta) -->
-          <section id="player" class="section card player-card" style="display:none;">
-            <div class="standings-header">
-              <div>
-                <h3>Jugador de la jornada</h3>
-                <p class="muted">Elige al jugador destacado de la última fecha.</p>
-              </div>
-              <div class="standings-actions">
-                <button id="closePlayerBtn" class="btn ghost" type="button">Cerrar</button>
-              </div>
-            </div>
-            <div class="player-body">
-              <div class="player-card-inner">
-                <div class="player-avatar-large"></div>
-                <h4 id="playerName">—</h4>
-                <p id="playerTeam" class="muted">Equipo: —</p>
-                <p id="playerDesc" class="muted">Aún no hay selección.</p>
-              </div>
-            </div>
-          </section>
-
-          <!-- Sección de tabla de posiciones (inicialmente oculta) -->
-          <section id="fixture" class="section card standings-card" style="display:none;">
-            <div class="standings-header">
-              <div>
-                <h3>Tabla de Posiciones - Copa Raul Rojas</h3>
-                <p class="muted">Sigue la clasificación de los equipos en tiempo real</p>
-              </div>
-              <div class="standings-actions">
-                <button id="closeTableBtn" class="btn ghost" type="button">Cerrar</button>
-              </div>
-            </div>
-
-            <div class="table-wrap">
-              <table class="standings-table" aria-label="Tabla de posiciones">
-                <thead>
-                  <tr>
-                    <th>Pos</th>
-                    <th>Equipo</th>
-                    <th>Pts</th>
-                    <th>PJ</th>
-                    <th>GF</th>
-                    <th>GC</th>
-                  </tr>
-                </thead>
-                <tbody id="standings-body">
-                  <!-- Filas: solo 6 columnas ahora -->
-                  <tr><td class="pos">1</td><td class="team">Gladiadores</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-                  <tr><td class="pos">2</td><td class="team">FC 9no</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-                  <tr><td class="pos">3</td><td class="team">Los Descalsos</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-                  <tr><td class="pos">4</td><td class="team">Gamboleros</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-                  <tr><td class="pos">5</td><td class="team">Scorpions</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-                  <tr><td class="pos">6</td><td class="team">Klan</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-                  <tr><td class="pos">6</td><td class="team"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                  <tr><td class="pos">7</td><td class="team"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                  <tr><td class="pos">8</td><td class="team"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                  <tr><td class="pos">9</td><td class="team"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                  <tr><td class="pos">10</td><td class="team"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
-
-          <!-- Calendario eliminado para mostrar sólo Reglas del Torneo -->
-
-          <!-- Reglas movidas a rules.html -->
-
-          <!-- Sección de equipos (inicialmente oculta) -->
-          <section id="teams" class="section card teams-card" style="display:none;">
-            <div class="standings-header">
-              <div>
-                <h3>Equipos inscritos</h3>
-                <p class="muted">Lista de equipos registrados (vacía por ahora)</p>
-              </div>
-              <div class="standings-actions">
-                <button id="closeTeamsBtn" class="btn ghost" type="button">Cerrar</button>
-              </div>
-            </div>
-            <ul id="teams-list" class="teams-list">
-              <li class="team-item" data-team-name="Gladiadores">
-                <div class="team-row">
-                  <img class="team-thumb" src="https://sclrcoiisappnzbaxlzc.supabase.co/storage/v1/object/public/team-logos/teams/32314b3b-6ef8-4e0a-a5f2-0c9b08c75961/logo.jpg" alt="Gladiadores logo">
-                  <div class="team-info">
-                    <button class="team-name" type="button">Gladiadores</button>
-                    <ul class="team-players small muted">
-                      <li>Kevin (C) #8</li>
-                      <li>Adan #3</li>
-                      <li>Haley #5</li>
-                      <li>Alian #1</li>
-                      <li>Juliyo #7</li>
-                    </ul>
-                  </div>
-                </div>
-              </li>
-              <li class="team-item" data-team-name="FC 9no">
-                <div class="team-row">
-                  <img class="team-thumb" src="https://sclrcoiisappnzbaxlzc.supabase.co/storage/v1/object/public/team-logos/teams/d00bbe10-d6d8-470a-8ef3-2a4ab27c58c3/logo.jpg" alt="FC 9no logo">
-                  <div class="team-info">
-                    <button class="team-name" type="button">FC 9no</button>
-                    <div class="muted">Sin jugadores registrados</div>
-                  </div>
-                </div>
-              </li>
-
-              <li class="team-item" data-team-name="Los Descalsos">
-                <div class="team-row">
-                  <img class="team-thumb" src="https://sclrcoiisappnzbaxlzc.supabase.co/storage/v1/object/public/team-logos/teams/0b203679-a1c9-49b1-a316-e2a588495d6f/logo.jpg?v=1758390280487" alt="Los Descalsos logo">
-                  <div class="team-info">
-                    <button class="team-name" type="button">Los Descalsos</button>
-                    <div class="muted">Sin jugadores registrados</div>
-                  </div>
-                </div>
-              </li>
-
-              <li class="team-item" data-team-name="Gamboleros">
-                <div class="team-row">
-                  <img class="team-thumb" src="https://sclrcoiisappnzbaxlzc.supabase.co/storage/v1/object/public/team-logos/teams/afe8cc36-d1b7-4052-ad89-99443c3e52f0/logo.jpg?v=1758388008060" alt="Gamboleros logo">
-                  <div class="team-info">
-                    <button class="team-name" type="button">Gamboleros</button>
-                    <div class="muted">Sin jugadores registrados</div>
-                  </div>
-                </div>
-              </li>
-
-              <li class="team-item" data-team-name="Scorpions">
-                <div class="team-row">
-                  <img class="team-thumb" src="https://sclrcoiisappnzbaxlzc.supabase.co/storage/v1/object/public/team-logos/teams/a9e7ac21-550a-4350-82ae-677979f69a81/logo.jpg?v=1758735227385" alt="Scorpions logo">
-                  <div class="team-info">
-                    <button class="team-name" type="button">Scorpions</button>
-                    <div class="muted">Sin jugadores registrados</div>
-                  </div>
-                </div>
-              </li>
-
-              <li class="team-item" data-team-name="Klan">
-                <div class="team-row">
-                  <img class="team-thumb" src="https://sclrcoiisappnzbaxlzc.supabase.co/storage/v1/object/public/team-logos/teams/37af335f-ef37-4d61-8221-801e13d64713/logo.jpg?v=1758392886644" alt="Klan logo">
-                  <div class="team-info">
-                    <button class="team-name" type="button">Klan</button>
-                    <div class="muted">Sin jugadores registrados</div>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </section>
-
-          <!-- Formulario de inscripción eliminado por petición del usuario -->
-        </section>
-
-        <!-- sidebar eliminado según solicitud del usuario -->
-      </div>
-    </div>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container">
-      <p>© Copa Raúl Roja — Todos los derechos reservados</p>
-    </div>
-  </footer>
-
-  <!-- Modal / Panel de Detalles del Equipo -->
-  <div id="teamModal" class="team-modal" aria-hidden="true">
-    <div class="team-modal-backdrop" id="teamModalBackdrop"></div>
-    <div class="team-modal-panel" role="dialog" aria-modal="true" aria-labelledby="teamModalTitle">
-      <button id="closeTeamModal" class="modal-close" aria-label="Cerrar panel">✕</button>
-      <div class="team-panel-inner">
-        <div class="team-left">
-          <div class="team-card card">
-            <img id="teamModalLogo" src="" alt="Logo equipo" class="team-logo">
-            <div class="team-badge-label">Equipo</div>
-            <h3 id="teamModalName">FC 9no</h3>
-            <p class="muted">Estadísticas del equipo</p>
-          </div>
-
-          <div class="card stats-compact">
-            <h4>Estadísticas</h4>
-            <div class="stats-grid-compact">
-              <div class="stat-box"><div class="stat-num">0</div><div class="stat-label">Victorias</div></div>
-              <div class="stat-box"><div class="stat-num">0</div><div class="stat-label">Empates</div></div>
-              <div class="stat-box"><div class="stat-num">0</div><div class="stat-label">Derrotas</div></div>
-              <div class="stat-box"><div class="stat-num">0</div><div class="stat-label">Puntos</div></div>
-              <div class="stat-box"><div class="stat-num">0</div><div class="stat-label">Goles a favor</div></div>
-              <div class="stat-box"><div class="stat-num">0</div><div class="stat-label">Goles en contra</div></div>
-              <div class="stat-box"><div class="stat-num">0</div><div class="stat-label">Diferencia</div></div>
-            </div>
-          </div>
         </div>
 
-        <div class="team-right">
-          <div class="card roster-card">
-            <h4 id="teamModalTitle">Plantilla del Equipo</h4>
-            <div id="teamRoster" class="muted">No hay jugadores registrados para este equipo</div>
-          </div>
+        <!-- Pantalla de Nombres Personalizados -->
+        <div id="custom-names" class="screen">
+            <h1 id="custom-title">Ingresa los Nombres</h1>
+            <p id="custom-instruction">Uno por línea:</p>
+            <textarea id="names-input" rows="3" placeholder="Nombre 1&#10;Nombre 2&#10;Nombre 3"></textarea>
+            <button id="submit-names">Continuar</button>
         </div>
-      </div>
+
+        <!-- Pantalla de Inicio -->
+        <div id="start-screen" class="screen">
+            <h1>Impostor Caney</h1>
+            <p>Elige la cantidad de jugadores:</p>
+            <input type="number" id="player-count" min="3" max="15" value="3">
+            <button id="start-game">Iniciar Partida</button>
+        </div>
+
+        <!-- Pantalla de Nombres de Jugadores -->
+        <div id="player-names" class="screen">
+            <h1>Ingresa los Nombres de los Jugadores</h1>
+            <div id="player-inputs"></div>
+            <a href="reveal.html" target="_blank" id="start-link" onclick="empezarPartida()">Empezar Partida</a>
+        </div>
+
+        <!-- Pantalla de Asignación de Roles -->
+        <div id="role-assignment" class="screen">
+            <h2>Asignando roles...</h2>
+
+            <div id="role-display">
+                <p id="current-player">Jugador 1, presiona para ver tu rol</p>
+                <button id="show-role">Ver Rol</button>
+                <p id="role-text" class="hidden"></p>
+            </div>
+            <button id="next-player" class="hidden">Siguiente Jugador</button>
+        </div>
+
+        <!-- Pantalla de Asignando -->
+        <div id="assigning" class="screen">
+            <h2>Asignando roles y personajes...</h2>
+            <p>Se asignan los roles y personajes. Aparece el primer jugador con su nombre. Al presionar, se muestra el rol.</p>
+        </div>
+
+        <!-- Pantalla de Revelación de Roles -->
+        <div id="roles-reveal" class="screen">
+            <h2>Roles Asignados</h2>
+            <div id="roles-list"></div>
+            <button id="continue-to-discussion">Continuar a Discusión</button>
+        </div>
+
+        <!-- Pantalla de Espera -->
+        <div id="waiting" class="screen">
+            <h2>Revelando Roles</h2>
+            <p>Los roles se están revelando en una nueva pestaña. Cierra la pestaña para continuar al juego.</p>
+            <button id="continue-to-discussion">Continuar a Discusión</button>
+        </div>
+
+        <!-- Pantalla de Discusión -->
+        <div id="discussion" class="screen">
+            <h2>Fase de Discusión</h2>
+            <p>Hablen entre ustedes y decidan quién es el impostor.</p>
+            <div id="timer">Tiempo restante: <span id="time-left">60</span> segundos</div>
+            <button id="start-voting">Iniciar Votación</button>
+        </div>
+
+        <!-- Pantalla de Votación -->
+        <div id="voting" class="screen">
+            <h2>Fase de Votación</h2>
+            <p id="voting-player">Jugador 1, vota por quién crees que es el impostor:</p>
+            <div id="vote-options"></div>
+            <button id="next-vote" class="hidden">Siguiente Voto</button>
+        </div>
+
+        <!-- Pantalla de Resultados -->
+        <div id="results" class="screen">
+            <h2>Resultados</h2>
+            <p id="impostor-reveal"></p>
+            <p id="outcome"></p>
+            <button id="restart-game">Reiniciar Juego</button>
+        </div>
     </div>
-  </div>
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
