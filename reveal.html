@@ -46,6 +46,21 @@
             display: none;
         }
         /* (Loading overlay removed) */
+        @media (max-width: 600px) {
+            #reveal-container {
+                padding: 15px;
+                max-width: 95%;
+            }
+            h1 {
+                font-size: 24px;
+            }
+            button {
+                width: 100%;
+                padding: 12px;
+                font-size: 16px;
+                margin: 5px 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -55,7 +70,7 @@
         <button id="show-role">Ver Rol</button>
         <p id="role-text" class="hidden"></p>
         <button id="next-player" class="hidden">Siguiente Jugador</button>
-        <button id="finish-reveal" class="hidden">Finalizar y Cerrar</button>
+        <button id="continue-button" class="hidden">Continuar</button>
     </div>
 
     <script>
@@ -201,9 +216,9 @@
                 document.getElementById('finish-reveal').classList.add('hidden');
             } else {
                 document.getElementById('current-player').textContent = 'Todos los roles han sido revelados.';
-                document.getElementById('show-role').classList.add('hidden');
-                document.getElementById('next-player').classList.add('hidden');
-                document.getElementById('finish-reveal').classList.remove('hidden');
+                    document.getElementById('show-role').classList.add('hidden');
+                    document.getElementById('next-player').classList.add('hidden');
+                    document.getElementById('continue-button').classList.remove('hidden');
             }
         }
 
@@ -224,9 +239,10 @@
             updateDisplay();
         });
 
-        document.getElementById('finish-reveal').addEventListener('click', function() {
-            window.close();
-        });
+                document.getElementById('continue-button').addEventListener('click', function() {
+                    // Navegar a la página de partida en transcurso con contador de 2 minutos
+                    window.location.href = 'in_progress.html';
+                });
     </script>
 </body>
 </html>
